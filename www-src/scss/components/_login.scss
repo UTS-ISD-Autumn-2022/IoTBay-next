@@ -1,0 +1,15 @@
+.login-container {
+    @extend .row;
+    @extend .justify-content-md-center;
+}
+
+.login-card {
+    @extend .card;
+    @extend .col-lg-4;
+    @extend .py-4;
+}
+
+.login-card-body {
+    @extend .card-body;
+    @extend .px-2;
+}

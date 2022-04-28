@@ -1,0 +1,5 @@
+.footer {
+    @extend .fixed-bottom;
+    @extend .border-top;
+    @extend .text-muted;
+}
