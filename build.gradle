@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.6.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'scala'
     id 'java'
     id 'war'
 }
@@ -8,6 +9,10 @@ plugins {
 group = 'au.edu.uts.isd'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
+ext {
+    junitVersion = '5.8.2'
+}
 
 configurations {
     compileOnly {
@@ -25,16 +30,34 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.scala-lang:scala3-library_3:3.1.2'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     runtimeOnly 'org.postgresql:postgresql'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    testImplementation 'org.scalatest:scalatest_3:3.2.11'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+
+    testRuntimeOnly 'co.helmethair:scalatest-junit-runner:0.1.10'
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        includeEngines 'scalatest'
+        testLogging {
+            events('passed', 'skipped', 'failed')
+        }
+    }
 }
