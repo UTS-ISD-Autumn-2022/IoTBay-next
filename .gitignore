@@ -17,6 +17,10 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+### Scala ###
+.metals
+.bloop
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -35,3 +39,4 @@ out/
 
 ### VS Code ###
 .vscode/
+
