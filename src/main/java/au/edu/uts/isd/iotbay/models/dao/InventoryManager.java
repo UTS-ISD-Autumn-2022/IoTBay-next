@@ -1,9 +1,10 @@
-package au.edu.uts.isd.iotbay.models.data;
+package au.edu.uts.isd.iotbay.models.dao;
 
-import au.edu.uts.isd.iotbay.models.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+
+import au.edu.uts.isd.iotbay.models.data.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

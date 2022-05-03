@@ -1,4 +1,4 @@
-package au.edu.uts.isd.iotbay.models;
+package au.edu.uts.isd.iotbay.models.data;
 
 // Java bean class, just like in the labs
 public class Category implements java.io.Serializable {

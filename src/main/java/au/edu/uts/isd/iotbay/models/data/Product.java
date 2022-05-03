@@ -1,4 +1,4 @@
-package au.edu.uts.isd.iotbay.models;
+package au.edu.uts.isd.iotbay.models.data;
 
 public class Product implements java.io.Serializable {
     final int _id;

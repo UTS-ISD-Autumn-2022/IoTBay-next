@@ -29,8 +29,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-    implementation 'org.scala-lang:scala3-library_3:3.1.2'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -42,33 +43,13 @@ dependencies {
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
-    testImplementation 'org.scalatest:scalatest_3:3.2.11'
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-
-    testRuntimeOnly 'co.helmethair:scalatest-junit-runner:0.1.10'
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
 }
 
-sourceSets {
-    main {
-        scala {
-            srcDirs = ['src/main/scala', 'src/main/java']
-        }
-        java {
-            srcDirs = []
-        }
-    }
-}
-
 tasks.named('test') {
-    useJUnitPlatform {
-        includeEngines 'scalatest'
-        testLogging {
-            events('passed', 'skipped', 'failed')
-        }
-    }
+    useJUnitPlatform ()
 }
