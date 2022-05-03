@@ -1,0 +1,15 @@
+.register-container {
+    @extend .row;
+    @extend .justify-content-md-center;
+}
+
+.register-card {
+    @extend .card;
+    @extend .col-lg-4;
+    @extend .py-4;
+}
+
+.register-card-body {
+    @extend .card-body;
+    @extend .px-2;
+}

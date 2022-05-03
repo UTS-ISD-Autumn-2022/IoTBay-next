@@ -1,13 +1,15 @@
 package au.edu.uts.isd.iotbay.models.forms;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Data
-public class RegisterForm implements java.io.Serializable {
+@NoArgsConstructor
+public class RegisterForm {
     @Max(value = 255)
     private String username;
     
@@ -22,5 +24,5 @@ public class RegisterForm implements java.io.Serializable {
     private String firstName;
 
     @Max(value = 63)
-    private String lastname;
+    private String lastName;
 }

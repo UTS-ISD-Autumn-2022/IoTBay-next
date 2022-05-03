@@ -10,7 +10,7 @@
 
     <div class="login-container">
         <div class="login-card">
-		    <form th:action="@{/register}" th:object="${registerForm}" method="post">
+		    <form action="#" th:action="@{/register}" th:object="${registerForm}" method="post">
 			    <h2>Register</h2>
 			    <hr />
 			    <div class="login-card-body">
@@ -19,19 +19,21 @@
 				        <input id="register-username" th:field="*{username}" class="form-control" type="text" placeholder="ExampleUsername" aria-required="true" />
                         <p class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                     </div>
-			        
-                    <div class="form-floating mb-3">
-                        <label asp-for="FullName" class="form-label">Full Name</label>
-				        <input asp-for="FullName" class="form-control" type="text" placeholder="John Doe" aria-required="true" />
-                        <span asp-validation-for="FullName" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="form-floating mb-3">
-                        <label asp-for="FullName" class="form-label">Full Name</label>
-				        <input asp-for="FullName" class="form-control" type="text" placeholder="John Doe" aria-required="true" />
-                        <span asp-validation-for="FullName" class="text-danger"></span>
-                    </div>
 
+                    <div class="form-row">
+                        <div class="form-floating mb-3">
+                            <label for="register-firstname" class="form-label">First Name</label>
+				            <input id="register-firstname" th:field="*{firstName}" class="form-control" type="text" placeholder="John" aria-required="true" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                        </div>
+                    
+                        <div class="form-floating mb-3">
+                            <label for="register-lastname" class="form-label">Last Name</label>
+				            <input id="register-lastname" th:field="*{lastName}" class="form-control" type="text" placeholder="Doe" aria-required="true" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                        </div>
+                    </div>
+			        
                     <div class="form-floating mb-3">
                         <label for="register-email" class="form-label">Email</label>
                         <input id="register-email" th:field="*{email}" class="form-control" type="email" placeholder="JohnDoe@example.com" aria-required="true" />
@@ -41,7 +43,7 @@
                     <div class="form-floating mb-3">
                         <label for="register-password" class="form-label">Password</label>
 				        <input id="register-password" th:field="*{password}" class="form-control" type="password" placeholder="Password1234" aria-required="true" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
                     </div>
 			        
                     <div>
