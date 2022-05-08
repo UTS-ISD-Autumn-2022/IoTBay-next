@@ -1,5 +1,6 @@
 .register-container {
     @extend .row;
+    @extend .g-3;
     @extend .justify-content-md-center;
 }
 
@@ -13,3 +14,16 @@
     @extend .card-body;
     @extend .px-2;
 }
+
+.register-col-12 {
+    @extend .form-floating;
+    @extend .mb-3;
+    @extend .col-12;
+}
+
+.register-col-6 {
+    @extend .form-floating;
+    @extend .mb-3;
+    @extend .col-md-6;
+}
+
