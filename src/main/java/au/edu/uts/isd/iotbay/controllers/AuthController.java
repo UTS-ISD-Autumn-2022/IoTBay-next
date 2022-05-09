@@ -23,6 +23,11 @@ public class AuthController {
     // @Autowired
     // UserManager userManager;
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/register")
     public String registerGet(RegisterForm registerForm) {
         return "register";

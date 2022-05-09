@@ -21,10 +21,9 @@ public class SecurityUserConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .withDefaultSchema()
-                .withUser("admin").password(passwordEncoder().encode("StrongPassword"))
-                .authorities("ADMIN");
+                .dataSource(dataSource);
+                //.withUser("admin").password(passwordEncoder().encode("StrongPassword"))
+                //.authorities("ADMIN");
     }
 
     @Override
@@ -33,7 +32,8 @@ public class SecurityUserConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests((auth) -> auth.antMatchers("/", "/register", "/static/**").permitAll())
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/login")
-                        .failureUrl("/login-failed"));
+                        .permitAll()
+                );
 
     }
 
