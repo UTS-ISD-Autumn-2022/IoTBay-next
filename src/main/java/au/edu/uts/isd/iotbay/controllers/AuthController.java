@@ -1,9 +1,13 @@
 package au.edu.uts.isd.iotbay.controllers;
 
+import au.edu.uts.isd.iotbay.models.dao.UserManager;
+import au.edu.uts.isd.iotbay.models.data.Customer;
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
 
 import javax.validation.Valid;
 
+import lombok.val;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,8 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Optional;
+
 @Controller
 public class AuthController {
+
+    @Autowired
+    UserManager userManager;
 
     @GetMapping("/register")
     public String registerGet(RegisterForm registerForm) {
@@ -21,10 +30,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerPost(@Valid RegisterForm registerForm, BindingResult result, Model model) {
-        System.out.println(registerForm);
         if (result.hasErrors()) {
             return "register";
         }
+
+        // val cust = new Customer(Optional.empty(), );
 
         return "index";
     }
