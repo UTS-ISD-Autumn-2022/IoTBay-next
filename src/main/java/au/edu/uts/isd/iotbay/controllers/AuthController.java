@@ -20,8 +20,8 @@ import java.util.Optional;
 @Controller
 public class AuthController {
 
-    @Autowired
-    UserManager userManager;
+    // @Autowired
+    // UserManager userManager;
 
     @GetMapping("/register")
     public String registerGet(RegisterForm registerForm) {

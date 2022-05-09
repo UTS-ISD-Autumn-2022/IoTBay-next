@@ -12,17 +12,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
-@Configuration
 @EnableWebSecurity
-public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityUserConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    DataSource dataSource;
+    private DataSource dataSource;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
+                .withDefaultSchema()
                 .withUser("admin").password(passwordEncoder().encode("StrongPassword"))
                 .authorities("ADMIN");
     }
@@ -34,6 +34,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/login")
                         .failureUrl("/login-failed"));
+
     }
 
     @Bean

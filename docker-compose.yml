@@ -4,7 +4,7 @@ services:
     image: postgres:alpine
     environment:
       - POSTGRES_USER=iotbayuser
-      - POSTGRES_PASSWORD=StrongPassword
+      - POSTGRES_PASSWORD=SupaStrongPassword
       - POSTGRES_DB=iotbaydb
     ports:
       - 5432:5432
