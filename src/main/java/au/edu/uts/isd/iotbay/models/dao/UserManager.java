@@ -1,68 +1,64 @@
 package au.edu.uts.isd.iotbay.models.dao;
 
 import au.edu.uts.isd.iotbay.models.data.Customer;
-import au.edu.uts.isd.iotbay.models.data.Role;
 import au.edu.uts.isd.iotbay.models.data.User;
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
-import lombok.val;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.val;
 import java.util.UUID;
-import java.util.stream.Stream;
 
-public class UserManager {}
-/*
 @Component
 public class UserManager {
     private final JdbcTemplate jdbcTemplate;
-    public UserManager(JdbcTemplate l_jdbcTemplate) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserManager(JdbcTemplate l_jdbcTemplate, PasswordEncoder l_passwordEncoder) {
         jdbcTemplate = l_jdbcTemplate;
+        passwordEncoder = l_passwordEncoder;
     }
 
-    public Stream<Role> fetchRoles() {
-        return roles;
-    }
+    public Customer registerCustomer(RegisterForm registerForm) throws Exception {
+        if (registerForm.getPassword().equals(registerForm.getPasswordVerification()))
+            throw new Exception("Passwords do not match!");
 
-    public Stream<User> fetchUsers() {
-        val sqlQuery = "SELECT * FROM user_credentials";
-        return jdbcTemplate.queryForStream(sqlQuery, (rs, rowNum) -> {
-            val id = UUID.fromString(rs.getString("id"));
-            val roleId = UUID.fromString(rs.getString("role_id"));
-            val role = roles.filter((r) -> r.getId().equals(roleId)).findFirst().get();
-            val username = rs.getString("username");
-            val password = rs.getString("password_hash");
-            val email = rs.getString("email");
-            val firstName = rs.getString("first_name");
-            val lastName = rs.getString("last_name");
+        try {
+            val createUserQuery = "INSERT INTO users (username, password, enabled) VALUES (?, ?, ?)";
+            jdbcTemplate.update(createUserQuery, registerForm.getUsername(),
+                    passwordEncoder.encode(registerForm.getPassword()),
+                    true);
+        } catch (Exception e) {
+            throw new Exception("Username already exists!");
+        }
 
-            return new User(Optional.of(id), role, username, password, email, firstName, lastName);
-        });
-    }
+        val createAuthorityQuery = "INSERT INTO authorities VALUES (?, ?)";
+        jdbcTemplate.update(createAuthorityQuery, registerForm.getUsername(), "CUSTOMER");
 
-    /*
-    public User fetchUserByUsername(String username) {
-        val sqlQuery = "SELECT * FROM user_credentials WHERE username = ?";
-        return jdbcTemplate.queryForObject(sqlQuery, new Object[]{username}, (rs, rowNum) -> {
-            val id = UUID.fromString(rs.getString("id"));
-            val roleId = UUID.fromString(rs.getString("role_id"));
-            val role = roles.filter((r) -> r.getId().equals(roleId)).findFirst().get();
-            val password = rs.getString("password");
-            val email = rs.getString("email");
-            val firstName = rs.getString("first_name");
-            val lastName = rs.getString("last_name");
+        val createUserInformationQuery = "INSERT INTO user_information (id, username, first_name, last_name, email)" +
+                "VALUES (?, ?, ?, ?, ?)";
 
-            return new User(Optional.of(id), role, username, password, email, firstName, lastName);
-        });
-    }
-     */
-/*
-    public Customer registerCustomer(RegisterForm registration) {
-        val sqlQuery = "INSERT INTO ";
+        val userId = UUID.randomUUID();
+        jdbcTemplate.update(
+                createUserInformationQuery,
+                userId.toString(),
+                registerForm.getUsername(),
+                registerForm.getFirstName(),
+                registerForm.getLastName(),
+                registerForm.getEmail());
 
-        return null;
+        val createCustomerQuery = "INSERT INTO customers (id, user_id) VALUES (?, ?)";
+        val custId = UUID.randomUUID();
+        jdbcTemplate.update(createCustomerQuery, custId.toString(), userId.toString());
+
+        return new Customer(
+                custId,
+                new User(
+                        userId,
+                        registerForm.getUsername(),
+                        registerForm.getFirstName(),
+                        registerForm.getLastName(),
+                        registerForm.getEmail()));
     }
 }
-*/

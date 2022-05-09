@@ -16,6 +16,9 @@ public class RegisterForm {
     @Min(value = 8)
     private String password;
 
+    @Min(value = 8)
+    private String passwordVerification;
+
     @Max(value = 255)
     @Email
     private String email;
