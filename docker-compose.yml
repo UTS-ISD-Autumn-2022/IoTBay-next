@@ -1,3 +1,4 @@
+
 services:
   database:
     container_name: iotbay-db

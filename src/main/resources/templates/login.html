@@ -17,19 +17,17 @@
 
                 <div class="login-card-body">
                     <div class="form-floating mb-3">
-                        <input id="loginUsername" class="form-control" type="text" placeholder="ExampleUsername" aria-required="true" />
+                        <input id="loginUsername" name="username" class="form-control" type="text" placeholder="ExampleUsername" aria-required="true" />
                         <label for="loginUsername" class="form-label">Username</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input id="loginPassword" class="form-control" type="password" placeholder="Password1234" aria-required="true" />
+                        <input id="loginPassword" name="password" class="form-control" type="password" placeholder="Password1234" aria-required="true" />
                         <label for="loginPassword" class="form-label">Password</label>
                     </div>
 
-                    <div class="form-check">
-                        <input id="loginRememberMe" type="checkbox" class="form-check-input">
-                        <label for="loginRememberMe" class="form-check-label">Remember Me</label>
-                    </div>
+                    <div th:if="${param.error}" class="invalid-feedback">Invalid login details.</div>
+                    <div th:if="${param.logout}" class="invalid-feedback">You have been logged out.</div>
 
                     <button id="loginSubmit" type="submit" class="btn btn-lg btn-primary text-light">Login</button>
                 </div>
@@ -40,3 +38,4 @@
     <script src="index.js"></script>
 </body>
 </html>
+
