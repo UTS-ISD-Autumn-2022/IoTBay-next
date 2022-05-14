@@ -12,4 +12,9 @@ import java.util.UUID;
 public class Customer {
     final private UUID id;
     private User userInformation;
+
+    public Customer(User user) {
+        id = UUID.randomUUID();
+        userInformation = user;
+    }
 }
