@@ -3,15 +3,24 @@ package au.edu.uts.isd.iotbay.models.dao;
 import au.edu.uts.isd.iotbay.models.data.Customer;
 import au.edu.uts.isd.iotbay.models.data.User;
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import lombok.val;
+
 import java.util.UUID;
 
 @Component
 public class UserManager {
+    final String ADMIN = "ADMIN";
+    final String CUSTOMER = "CUSTOMER";
+    final String EMPLOYEE = "EMPLOYEE";
+
+    final Logger logger = LoggerFactory.getLogger(UserManager.class);
+
     private final JdbcTemplate jdbcTemplate;
     private final PasswordEncoder passwordEncoder;
 
@@ -21,44 +30,63 @@ public class UserManager {
     }
 
     public Customer registerCustomer(RegisterForm registerForm) throws Exception {
-        if (registerForm.getPassword().equals(registerForm.getPasswordVerification()))
+        if (!registerForm.getPassword().equals(registerForm.getPasswordVerification())) {
+            logger.error("User tried to enter non matching passwords");
             throw new Exception("Passwords do not match!");
-
-        try {
-            val createUserQuery = "INSERT INTO users (username, password, enabled) VALUES (?, ?, ?)";
-            jdbcTemplate.update(createUserQuery, registerForm.getUsername(),
-                    passwordEncoder.encode(registerForm.getPassword()),
-                    true);
-        } catch (Exception e) {
-            throw new Exception("Username already exists!");
         }
 
+        val user = new User(registerForm);
+        val customer = new Customer(user);
+
+        try {
+            createUserIdentity(user.getUsername(), registerForm.getPassword());
+            addUserToCustomerAuthority(user.getUsername());
+
+            createUserInformation(
+                    user.getId().toString(),
+                    user.getUsername(),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getEmail()
+                    );
+
+            createCustomer(customer.getId().toString(), user.getId().toString());;
+        } catch (Exception e) {
+            logger.error(e.toString());
+            logger.error(e.getMessage());
+            throw new Exception("Registration Error!");
+        }
+
+        return customer;
+   }
+
+    private void createUserIdentity(final String username, final String rawPassword) throws Exception{
+        logger.info("Creating new user with username " + username);
+        val createUserQuery="INSERT INTO users (username, password, enabled) VALUES (?, ?, ?)";
+        jdbcTemplate.update(createUserQuery,username,passwordEncoder.encode(rawPassword), true);
+    }
+
+    private void addUserToCustomerAuthority(final String username) throws Exception {
+        logger.info("Adding user " + username + "to Customer Authority");
         val createAuthorityQuery = "INSERT INTO authorities VALUES (?, ?)";
-        jdbcTemplate.update(createAuthorityQuery, registerForm.getUsername(), "CUSTOMER");
+        jdbcTemplate.update(createAuthorityQuery, username, CUSTOMER);
+    }
 
-        val createUserInformationQuery = "INSERT INTO user_information (id, username, first_name, last_name, email)" +
-                "VALUES (?, ?, ?, ?, ?)";
-
-        val userId = UUID.randomUUID();
+    private void createUserInformation(final String id, final String username, final String firstName, final String lastName, final String email) throws Exception {
+        logger.info("Creating user information for " + username);
+        val createUserInformationQuery = "INSERT INTO user_information (id, username, first_name, last_name, email)" + "VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(
                 createUserInformationQuery,
-                userId.toString(),
-                registerForm.getUsername(),
-                registerForm.getFirstName(),
-                registerForm.getLastName(),
-                registerForm.getEmail());
+                id,
+                username,
+                firstName,
+                lastName,
+                email);
+    }
 
+    private void createCustomer(final String id, final String userId) throws Exception {
+        logger.info("Creating customer table");
         val createCustomerQuery = "INSERT INTO customers (id, user_id) VALUES (?, ?)";
-        val custId = UUID.randomUUID();
-        jdbcTemplate.update(createCustomerQuery, custId.toString(), userId.toString());
-
-        return new Customer(
-                custId,
-                new User(
-                        userId,
-                        registerForm.getUsername(),
-                        registerForm.getFirstName(),
-                        registerForm.getLastName(),
-                        registerForm.getEmail()));
+        jdbcTemplate.update(createCustomerQuery, id, userId.toString());
     }
 }

@@ -13,7 +13,7 @@
 		    <form action="#" th:action="@{/register}" th:object="${registerForm}" method="post">
 			    <h2>Register</h2>
 			    <hr />
-			    <div class="login-card-body">
+			    <div class="register-card-body">
 			        <div class="register-col-12">
 				        <input id="regUsername" th:field="*{username}" class="form-control" type="text" placeholder="ExampleUsername" aria-required="true" />
                         <label for="regUsername" class="form-label">Username</label>
@@ -43,14 +43,20 @@
                         <label for="regPassword" class="form-label">Password</label>
                         <p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
                     </div>
-			        
+
+                    <div class="register-col-12">
+                        <input id="regPasswordConfirmation" th:field="*{passwordVerification}" class="form-control" type="password" placeholder="Password1234" aria-required="true" />
+                        <label for="regPasswordConfirmation" class="form-label">Password Verification</label>
+                        <p class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{passwordVerification}"></p>
+                    </div>
+
                     <div>
 				        <button id="regSubmit" type="submit" class="btn btn-lg btn-primary text-light">Register</button>
                     </div>
 			 
                     <div>
 				        <p>
-					        <a asp-area="" asp-controller="Account" asp-action="Login">Login with existing account</a>
+                            <a class="nav-link text-dark" th:href="@{/login}">Login with existing account.</a>
                         </p>
                     </div>
 			 

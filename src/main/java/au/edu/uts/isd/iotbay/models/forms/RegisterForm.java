@@ -6,26 +6,27 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 public class RegisterForm {
-    @Max(value = 255)
+    @Size(max = 255)
     private String username;
     
-    @Min(value = 8)
+    @Size(min = 8)
     private String password;
 
-    @Min(value = 8)
+    @Size(min = 8)
     private String passwordVerification;
 
-    @Max(value = 255)
     @Email
+    @Size(max = 255)
     private String email;
 
-    @Max(value = 63)
+    @Size(max = 63)
     private String firstName;
 
-    @Max(value = 63)
+    @Size(max = 63)
     private String lastName;
 }

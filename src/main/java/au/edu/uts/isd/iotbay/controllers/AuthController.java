@@ -7,6 +7,8 @@ import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
 import javax.validation.Valid;
 
 import lombok.val;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import java.util.Optional;
 
 @Controller
 public class AuthController {
+    final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     UserManager userManager;
@@ -37,13 +40,17 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerPost(@Valid RegisterForm registerForm, BindingResult result, Model model) {
+        logger.info(registerForm.toString());
         if (result.hasErrors()) {
+            for (val e : result.getAllErrors())
+                logger.error(e.getDefaultMessage());
             return "register";
         }
 
         try {
             userManager.registerCustomer(registerForm);
         } catch (Exception e) {
+            logger.error(e.getMessage());
             result.addError(new FieldError("password", "password", "Passwords did not match"));
             return "register";
         }
