@@ -34,16 +34,6 @@ CREATE TABLE address (
     country varchar (255) NOT NULL
 );
 
-CREATE TABLE payment_details (
-    id uuid PRIMARY KEY,
-    customer_id uuid REFERENCES customers (id),
-    card_name varchar (255) NOT NULL,
-    card_number varchar (16) NOT NULL,
-    card_cvc varchar (3) NOT NULL,
-    card_expiry_day varchar (2) NOT NULL,
-    card_expiry_year varchar (4) NOT NULL
-);
-
 -- admin password is StrongPassword
 INSERT INTO users (username, password, enabled)
     VALUES
