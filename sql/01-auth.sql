@@ -44,6 +44,7 @@ CREATE TABLE payment_details (
     card_expiry_year varchar (4) NOT NULL
 );
 
+-- admin password is StrongPassword
 INSERT INTO users (username, password, enabled)
     VALUES
     ('admin', '$2a$12$c3dUM4Wws7E9umjkWgDiVuxr/SQ657sBJW6TEnGqBdlgAEGBuz.Iq', true);
