@@ -31,9 +31,9 @@ public class SecurityUserConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests((auth) -> auth.antMatchers("/", "/register", "/static/**").permitAll())
                 .formLogin((formLogin) -> formLogin
-                        .loginPage("/login")
+                    .loginPage("/login")
                         .permitAll()
-                );
+           );
 
     }
 
