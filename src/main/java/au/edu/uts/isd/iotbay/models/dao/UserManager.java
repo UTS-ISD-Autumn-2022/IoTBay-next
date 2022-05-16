@@ -43,14 +43,14 @@ public class UserManager {
             addUserToCustomerAuthority(user.getUsername());
 
             createUserInformation(
-                    user.getId().toString(),
+                    user.getId(),
                     user.getUsername(),
                     user.getFirstName(),
                     user.getLastName(),
                     user.getEmail()
                     );
 
-            createCustomer(customer.getId().toString(), user.getId().toString());;
+            createCustomer(customer.getId(), user.getId());;
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error(e.getMessage());
@@ -72,7 +72,7 @@ public class UserManager {
         jdbcTemplate.update(createAuthorityQuery, username, CUSTOMER);
     }
 
-    private void createUserInformation(final String id, final String username, final String firstName, final String lastName, final String email) throws Exception {
+    private void createUserInformation(final UUID id, final String username, final String firstName, final String lastName, final String email) throws Exception {
         logger.info("Creating user information for " + username);
         val createUserInformationQuery = "INSERT INTO user_information (id, username, first_name, last_name, email)" + "VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(
@@ -84,9 +84,9 @@ public class UserManager {
                 email);
     }
 
-    private void createCustomer(final String id, final String userId) throws Exception {
+    private void createCustomer(final UUID id, final UUID userId) throws Exception {
         logger.info("Creating customer table");
         val createCustomerQuery = "INSERT INTO customers (id, user_id) VALUES (?, ?)";
-        jdbcTemplate.update(createCustomerQuery, id, userId.toString());
+        jdbcTemplate.update(createCustomerQuery, id, userId);
     }
 }

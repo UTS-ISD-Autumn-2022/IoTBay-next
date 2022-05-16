@@ -43,4 +43,3 @@ CREATE TABLE payment_details (
     card_expiry_day varchar (2) NOT NULL,
     card_expiry_year varchar (4) NOT NULL
 );
-
