@@ -1,13 +1,19 @@
-CREATE TABLE roles (
-    id uuid PRIMARY KEY,
-    name varchar (255) UNIQUE NOT NULL
+CREATE TABLE users (
+    username varchar (50) PRIMARY KEY NOT NULL,
+    password varchar (500) NOT NULL,
+    enabled boolean NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE user_credentials (
+CREATE TABLE authorities (
+    username varchar (50) NOT NULL,
+    authority varchar (50) NOT NULL,
+    CONSTRAINT fk_authority_users FOREIGN KEY (username) REFERENCES users (username)
+);
+CREATE UNIQUE INDEX ix_auth_username ON authorities (username, authority);
+
+CREATE TABLE user_information (
     id uuid PRIMARY KEY,
-    username varchar (255) UNIQUE NOT NULL,
-    password_hash char (60) NOT NULL,
-    role_id uuid REFERENCES roles (id) NOT NULL,
+    username varchar (255) UNIQUE NOT NULL REFERENCES users (username),
     first_name varchar (63) NOT NULL,
     last_name varchar (63) NOT NULL,
     email varchar (255) NOT NULL
@@ -15,7 +21,7 @@ CREATE TABLE user_credentials (
 
 CREATE TABLE customers (
     id uuid PRIMARY KEY,
-    credential_id uuid REFERENCES user_credentials (id) UNIQUE NOT NULL
+    user_id uuid REFERENCES user_information (id) UNIQUE NOT NULL
 );
 
 CREATE TABLE address (
@@ -28,3 +34,12 @@ CREATE TABLE address (
     country varchar (255) NOT NULL
 );
 
+CREATE TABLE payment_details (
+    id uuid PRIMARY KEY,
+    customer_id uuid REFERENCES customers (id),
+    card_name varchar (255) NOT NULL,
+    card_number varchar (16) NOT NULL,
+    card_cvc varchar (3) NOT NULL,
+    card_expiry_day varchar (2) NOT NULL,
+    card_expiry_year varchar (4) NOT NULL
+);

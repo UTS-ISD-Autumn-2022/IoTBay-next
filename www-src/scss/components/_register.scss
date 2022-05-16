@@ -1,7 +1,7 @@
 .register-container {
+    @extend .justify-content-md-center;
     @extend .row;
     @extend .g-3;
-    @extend .justify-content-md-center;
 }
 
 .register-card {
@@ -13,6 +13,8 @@
 .register-card-body {
     @extend .card-body;
     @extend .px-2;
+    @extend .row;
+    @extend .g-3;
 }
 
 .register-col-12 {

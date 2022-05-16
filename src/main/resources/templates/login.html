@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/layout.html :: layout_head(~{::title})">
+    <title>IoTBay - Register</title>
+</head>
+
+<body>
+    <header th:insert="fragments/layout.html :: navbar"></header>
+
+    <div class="login-container">
+        <div class="login-card">
+            <form method="post" th:action="@{/login}">
+
+                <h2>Login</h2>
+
+                <hr />
+
+                <div class="login-card-body">
+                    <div class="form-floating mb-3">
+                        <input id="loginUsername" name="username" class="form-control" type="text" placeholder="ExampleUsername" aria-required="true" />
+                        <label for="loginUsername" class="form-label">Username</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input id="loginPassword" name="password" class="form-control" type="password" placeholder="Password1234" aria-required="true" />
+                        <label for="loginPassword" class="form-label">Password</label>
+                    </div>
+
+                    <div th:if="${param.error}" class="invalid-feedback">Invalid login details.</div>
+                    <div th:if="${param.logout}" class="invalid-feedback">You have been logged out.</div>
+
+                    <button id="loginSubmit" type="submit" class="btn btn-lg btn-primary text-light">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
+
