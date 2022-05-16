@@ -1,45 +1,29 @@
 package au.edu.uts.isd.iotbay.models.data;
 
+import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@Getter
-@Setter
-public abstract class User {
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    final private BCryptPasswordEncoder encoder;
-
-    private UUID id;
-
-    private Role role;
-
+@Data
+@AllArgsConstructor
+public class User {
+    final private UUID id;
     private String username;
-
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private String passwordHash;
     private String email;
-
     private String firstName;
-
     private String lastName;
 
-    public User(BCryptPasswordEncoder encoder, Optional<UUID> maybeId, Role role, String username, String password, String email, String firstName, String lastName) {
-        this.id = maybeId.orElse(UUID.randomUUID());
-        this.encoder = encoder;
-        this.role = role;
-        this.username = username;
-        this.passwordHash = encoder.encode(password);
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+    public User(RegisterForm registerForm) {
+        id = UUID.randomUUID();
 
-    public void setNewPassword(String password) {
-        passwordHash = encoder.encode(password);
+        username = registerForm.getUsername();
+        email = registerForm.getEmail();
+
+        firstName = registerForm.getFirstName();
+        lastName = registerForm.getLastName();
     }
 }
