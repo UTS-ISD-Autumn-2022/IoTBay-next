@@ -40,7 +40,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerPost(@Valid RegisterForm registerForm, BindingResult result, Model model) {
-        logger.info(registerForm.toString());
         if (result.hasErrors()) {
             for (val e : result.getAllErrors())
                 logger.error(e.getDefaultMessage());
