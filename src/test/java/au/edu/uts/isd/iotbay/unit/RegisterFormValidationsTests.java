@@ -19,8 +19,19 @@ public class RegisterFormValidationsTests {
     @Autowired
     Validator validator;
 
+    /**
+     * Test if user enters null values
+     *
+     * User Story:
+     *
+     * Given: a anonymous user wants to register an account
+     * When: A user submits a form with a null field
+     * Then: The server responds with a field validation error
+     * 
+     * @result form has invalid field errors on null fields
+     */
     @Test
-    @DisplayName("Test RegisterForm Model for null field validations")
+    @DisplayName("Test RegisterForm model for invalid field sizes")
     void testNullFields() {
         RegisterForm form = new RegisterForm();
 
