@@ -60,7 +60,39 @@ public class UserManager {
         return customer;
    }
 
-    private void createUserIdentity(final String username, final String rawPassword) throws Exception{
+   public Customer fetchCustomerByUsername(final String username) {
+        logger.info("Fetching customer details");
+        val fetchCustomerQuery = "SELECT c.id, user_id, email, first_name, last_name FROM customers AS c INNER JOIN user_information AS ui ON c.user_id = ui.id WHERE username = ?";
+
+        return jdbcTemplate.queryForObject(fetchCustomerQuery, (rs, _rn) -> {
+            val user = new User(UUID.fromString(rs.getString("user_id")));
+            user.setUsername(username);
+            user.setEmail(rs.getString("email"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
+
+            val customer = new Customer(UUID.fromString(rs.getString("id")));
+            customer.setUserInformation(user);
+
+            return customer;
+        }, username);
+   }
+
+   public User fetchUserInformationByUsername(final String username) {
+        logger.info("Fetching user details");
+        val fetchUserQuery = "SELECT * FROM user_information WHERE username = ?";
+        return jdbcTemplate.queryForObject(fetchUserQuery, (rs, _rc) -> {
+            val user = new User(UUID.fromString(rs.getString("id")));
+            user.setUsername(username);
+            user.setEmail(rs.getString("email"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
+
+            return user;
+        }, username);
+    }
+
+   private void createUserIdentity(final String username, final String rawPassword) throws Exception{
         logger.info("Creating new user with username " + username);
         val createUserQuery="INSERT INTO users (username, password, enabled) VALUES (?, ?, ?)";
         jdbcTemplate.update(createUserQuery,username,passwordEncoder.encode(rawPassword), true);
