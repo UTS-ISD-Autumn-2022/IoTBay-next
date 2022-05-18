@@ -3,20 +3,19 @@ package au.edu.uts.isd.iotbay.models.forms;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class BankPaymentForm {
-    @Max(value = 255)
+public class Bankpaymentform {
+    @Size(max = 255)
     private String  BANK_ACCOUNT_NAME;
     
-    @max(value = 13)
+    @Size(max = 13)
     private String BANK_ACCOUNT_NUMBER;
 
-    @Max(value = 3)
+    @Size(max = 3)
     private String BSB_NUMBER;
    
    

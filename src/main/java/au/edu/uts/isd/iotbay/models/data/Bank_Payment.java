@@ -1,12 +1,14 @@
 package au.edu.uts.isd.iotbay.models.data;
 
+
+
 public class Bank_Payment implements java.io.Serializable {
 final int _id;
 String _BANK_NAME;
-char  _BANK_ACCOUNT_NUMBER; 
-char  _BSB_NUMBER; 
+int  _BANK_ACCOUNT_NUMBER; 
+int  _BSB_NUMBER; 
 
-public Bank_Payment (int id , String BANK_NAME , char BANK_ACCOUNT_NUMBER , char BSB_NUMBER ) {
+public Bank_Payment (int id , String BANK_NAME , int BANK_ACCOUNT_NUMBER , int BSB_NUMBER ) {
     _id = id;
     _BANK_NAME =  BANK_NAME;
    _BANK_ACCOUNT_NUMBER = BANK_ACCOUNT_NUMBER; 
@@ -26,7 +28,7 @@ public Bank_Payment (int id , String BANK_NAME , char BANK_ACCOUNT_NUMBER , char
         _BANK_NAME = BANK_NAME;
     }
 
-    public char get_BANK_ACCOUNT_NUMBER() {
+    public int get_BANK_ACCOUNT_NUMBER() {
         return _BANK_ACCOUNT_NUMBER;
     }
 
@@ -34,7 +36,7 @@ public Bank_Payment (int id , String BANK_NAME , char BANK_ACCOUNT_NUMBER , char
       _BANK_ACCOUNT_NUMBER = BANK_ACCOUNT_NUMBER;
     }
 
-    public char get_BSB_NUMBER() {
+    public int get_BSB_NUMBER() {
         return _BSB_NUMBER;
     }
 
