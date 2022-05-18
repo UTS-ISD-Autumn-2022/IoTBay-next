@@ -15,9 +15,9 @@ import java.util.UUID;
 
 @Component
 public class UserManager {
-    final String ADMIN = "ADMIN";
-    final String CUSTOMER = "CUSTOMER";
-    final String EMPLOYEE = "EMPLOYEE";
+    final String ADMIN = "ROLE_ADMIN";
+    final String CUSTOMER = "ROLE_CUSTOMER";
+    final String EMPLOYEE = "ROLE_EMPLOYEE";
 
     final Logger logger = LoggerFactory.getLogger(UserManager.class);
 

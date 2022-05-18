@@ -22,14 +22,19 @@ public class SecurityUserConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource);
-                //.withUser("admin").password(passwordEncoder().encode("StrongPassword"))
-                //.authorities("ADMIN");
+                // .withUser("admin").password(passwordEncoder().encode("StrongPassword"))
+                // .roles("ADMIN");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests((auth) -> auth.mvcMatchers("/", "/register", "/static/**").permitAll())
+                .authorizeRequests((auth) ->
+                    auth
+                            .mvcMatchers("/", "/register", "/static/**").permitAll()
+                            .mvcMatchers("/profile/**").hasRole("CUSTOMER")
+                            .mvcMatchers("/admin/**").hasRole("ADMIN")
+                )
                 .formLogin((formLogin) -> formLogin
                     .loginPage("/login")
                         .permitAll()
