@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head th:replace="fragments/layout.html :: layout_head(~{::title})">
-  <title>IoT Bay - User Profile</title>
+    <title>IoTBay - Bank Payment</title>
 </head>
 
 <body>
-<header th:insert="fragments/layout.html :: navbar"></header>
+    <header th:insert="fragments/layout.html :: navbar"></header>
 
-<footer class="footer">
-  <div class="container">
-    &copy; 2022 - IoTBay - <a>Privacy</a>
-  </div>
-</footer>
+    <div class="BankPayment-container">
+        <div class="BankPayment-card">
+            <form method="post" th:action="@{/BankPaymnet}">
 
-<script src="index.js"></script>
+                <h2>Bank Payment</h2>
+
+                <hr />
+
+                <div class="BankPayment-card-body">
+                    <div class="form-floating mb-3">
+                        <input id="BankAccountName" name="AccountName" class="form-control" type="text" placeholder="Jogn Citizen" aria-required="true" />
+                        <label for="BankAccount" class="form-label">etc. john Smith</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input id="BankAccountNumber" name="acc-num" class="form-control" type="password" placeholder="123-456" aria-required="true" />
+                        <label for="BankAccountNumber" class="form-label"> 123-456 </label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input id="BSBNumber" name="bsb-num" class="form-control" type="password" placeholder="123-456" aria-required="true" />
+                      <label for="BSBNumber" class="form-label"> 123-456 </label>
+                  </div>
+
+                    <div th:if="${param.error}" class="invalid-feedback">Invalid Pyament Details.</div>
+                 
+
+                    <button id="loginSubmit" type="submit" class="btn btn-lg btn-primary text-light">Sybmit Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
 </body>
-
 </html>
+
