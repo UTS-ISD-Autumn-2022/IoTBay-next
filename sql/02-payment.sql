@@ -3,7 +3,8 @@ CREATE TABLE payment_Option (
     customer_id uuid REFERENCES customers (id)
     
 );
-Create TABLE CARD_PAYEMNT (
+
+Create TABLE CARD_PAYMENT (
     id uuid PRIMARY KEY,
     card_name varchar (255) NOT NULL,
     card_number numeric (16) NOT NULL,
