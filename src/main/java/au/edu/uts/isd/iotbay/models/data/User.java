@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class User {
     final private UUID id;
     private String username;
