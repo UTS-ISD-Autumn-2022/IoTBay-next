@@ -20,7 +20,7 @@ public class AuthTests {
     private MockMvc mvc;
 
     @MockBean
-    UserManager userManager;
+    private UserManager userManager;
 
     @Test
     @DisplayName("UA-1: Authentication Test")
