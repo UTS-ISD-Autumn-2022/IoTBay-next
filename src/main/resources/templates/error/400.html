@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/layout.html :: layout_head(~{::title})">
+    <title>400</title>
+</head>
+
+<body>
+    <header th:insert="fragments/layout.html :: navbar"></header>
+
+    <div class="container-md">
+        <h1>400 Bad Request</h1>
+        <h3>It looks like the site you were trying to access could not be processed at this time.</h3>
+        <a th:href="@{/}" class="link-info">Return Home</a>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
