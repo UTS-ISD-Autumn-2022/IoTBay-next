@@ -1,3 +1,5 @@
+[![Application CI/CD Workflow](https://github.com/UTS-ISD-Autumn-2022/IoTBay-next/actions/workflows/app.yml/badge.svg)](https://github.com/UTS-ISD-Autumn-2022/IoTBay-next/actions/workflows/app.yml)
+
 # IoT Bay Spring Boot
 
 ## Installation Instructions
