@@ -3,6 +3,7 @@ package au.edu.uts.isd.iotbay.models.dao;
 import au.edu.uts.isd.iotbay.models.data.Customer;
 import au.edu.uts.isd.iotbay.models.data.User;
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.val;
 
+import java.sql.SQLException;
 import java.util.UUID;
 
 @Component
@@ -18,6 +20,12 @@ public class UserManager {
     final String ADMIN = "ROLE_ADMIN";
     final String CUSTOMER = "ROLE_CUSTOMER";
     final String EMPLOYEE = "ROLE_EMPLOYEE";
+
+    @Getter
+    final String REGISTER_ACTION = "REGISTER";
+
+    @Getter
+    final String LOGIN_ACTION = "LOGIN";
 
     final Logger logger = LoggerFactory.getLogger(UserManager.class);
 
@@ -56,6 +64,8 @@ public class UserManager {
             logger.error(e.getMessage());
             throw new Exception("Registration Error!");
         }
+
+        logPersist(user.getUsername(), REGISTER_ACTION);
 
         return customer;
    }
@@ -120,5 +130,12 @@ public class UserManager {
         logger.info("Creating customer table");
         val createCustomerQuery = "INSERT INTO customers (id, user_id) VALUES (?, ?)";
         jdbcTemplate.update(createCustomerQuery, id, userId);
+    }
+
+    public void logPersist(final String username, final String action) throws SQLException {
+        logger.info("Logging action " + action + "by user " + username);
+
+        val createLogQuery = "INSERT INTO auth_log (id, username, log_action) VALUES (?, ?, ?)";
+        jdbcTemplate.update(createLogQuery, UUID.randomUUID(), username, action);
     }
 }
