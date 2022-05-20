@@ -12,8 +12,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,19 +72,35 @@ public class AuthTests {
     }
 
     /**
-     * <h3>As a customer, I want to view my account details so that I can ensure they are valid</h3>
+     * <h3>As a registered account holder, I want to access restricted parts of the app, so I can use those features</h3>
      *
      * <ul>
-     *     <li><b>Given:</b> User has registered an account</li>
-     *     <li><b>When:</b> User enters valid login details</li>
-     *     <li><b>Then:</b> The server redirects user to home screen with login cookie</li>
+     *     <li><b>Given:</b> The user is logged in</li>
+     *     <li><b>When:</b> The user tries to access a hidden portion of the app</li>
+     *     <li><b>Then:</b> The server responds with 200 OK</li>
      * </ul>
      *
-     * @result http: 200 OK, user details
+     * @result http: 200 OK
      */
     @Test
     @DisplayName("UA-2: Authorisation Test")
-    void testAuthorisation() {
+    void testAuthorisation() throws Exception {
+        mvc.perform(get("/profile"))
+                .andExpect(redirectedUrl("http://localhost/login"))
+                .andExpect(status().isFound());
+
+        mvc.perform(get("/profile").with(
+                        user("admin")
+                                .password("StrongPassword")
+                                .roles("ADMIN")))
+                .andExpect(status().isForbidden());
+
+        mvc.perform(get("/admin").with(
+                user("admin")
+                        .password("StrongPassword")
+                        .roles("ADMIN")))
+                .andExpect(status().isOk());
+
     }
 
 
