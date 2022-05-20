@@ -32,16 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(properties = {
-        "logging.level.org.springframework=WARN",
-
-        "spring.jpa.hibernate.ddl-auto=none",
-        "spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true",
-
-        "spring.datasource.url=jdbc:postgresql://localhost:5432/iotbaydb-test",
-        "spring.datasource.username=iotbayuser",
-        "spring.datasource.password=SupaStrongPassword",
-})
 public class AuthTests {
 
     final Logger log = LoggerFactory.getLogger(AuthTests.class);
