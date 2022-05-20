@@ -1,4 +1,4 @@
-package au.edu.uts.isd.iotbay.unit;
+package au.edu.uts.isd.iotbay;
 
 import au.edu.uts.isd.iotbay.controllers.PaymentController;
 import au.edu.uts.isd.iotbay.models.dao.BankPaymentManager;
