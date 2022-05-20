@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v3.0.0
         with:
           name: IoTBay-0.0.1-SNAPSHOT-plain.war
-          path: build/reports/tests/test
+          path: build/libs/IoTBay-0.0.1-SNAPSHOT-plain.war
 
 
 
