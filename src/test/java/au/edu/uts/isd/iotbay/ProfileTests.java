@@ -25,7 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-@WebMvcTest(ProfileController.class)
+/*
+
 public class ProfileTests {
     final private Logger log = LoggerFactory.getLogger(ProfileTests.class);
 
@@ -54,6 +55,7 @@ public class ProfileTests {
      *
      * @result http: 200 OK, user details
      */
+/*
     @Test
     @DisplayName("UA-4: Read Customer Profile Test")
     void testViewCustomer() throws Exception {
@@ -80,6 +82,7 @@ public class ProfileTests {
      *
      * @result form has invalid field errors on null fields
      */
+/*
     @Test
     @DisplayName("Test RegisterForm model for invalid field sizes")
     void testNullFields() {
@@ -87,3 +90,4 @@ public class ProfileTests {
 
 
 }
+*/

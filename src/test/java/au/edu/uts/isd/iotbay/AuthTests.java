@@ -146,8 +146,7 @@ public class AuthTests {
                 .param("lastName", form.getLastName())
                 .param("password", form.getPassword())
                 .param("passwordVerification", form.getPasswordVerification()))
-                .andExpect(authenticated().withRoles("CUSTOMER"))
-                .andExpect(redirectedUrl("/"))
+                .andExpect(redirectedUrl("/login"))
                 .andExpect(status().isFound());
     }
 }
