@@ -3,7 +3,6 @@ package au.edu.uts.isd.iotbay.controllers;
 import au.edu.uts.isd.iotbay.models.dao.UserManager;
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import lombok.val;

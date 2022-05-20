@@ -8,7 +8,6 @@ import au.edu.uts.isd.iotbay.models.data.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 @Component
 public class InventoryManager {
@@ -17,6 +16,7 @@ public class InventoryManager {
     public InventoryManager(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
     public Iterable<Product> fetchProducts() {
         String sqlQuery = "SELECT * FROM products";
         return jdbcTemplate.query(sqlQuery, new RowMapper<Product>() {
