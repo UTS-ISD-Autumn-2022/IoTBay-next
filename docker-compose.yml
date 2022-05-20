@@ -11,3 +11,14 @@ services:
       - 5432:5432
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
+  database-test:
+    container_name: iotbay-db-test
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=iotbayuser
+      - POSTGRES_PASSWORD=SupaStrongPassword
+      - POSTGRES_DB=iotbaydb-test
+    ports:
+      - 5432:5432
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d

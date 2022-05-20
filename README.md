@@ -7,7 +7,7 @@
 2. Run the project with `./gradlew bootRun` on linux/mac or
    `.\gradlew.bat bootRun` on windows
 
-3. Open the project at `localhost:8080`.
+3. Open the project at <http://localhost:8080>.
 
 ## Testing Instructions
 

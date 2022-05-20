@@ -13,7 +13,7 @@ CREATE UNIQUE INDEX ix_auth_username ON authorities (username, authority);
 
 CREATE TABLE user_information (
     id uuid PRIMARY KEY,
-    username varchar (255) UNIQUE NOT NULL REFERENCES users (username),
+    username varchar (50) UNIQUE NOT NULL REFERENCES users (username),
     first_name varchar (63) NOT NULL,
     last_name varchar (63) NOT NULL,
     email varchar (255) NOT NULL
@@ -51,4 +51,4 @@ INSERT INTO users (username, password, enabled)
 
 INSERT INTO authorities (username, authority)
     VALUES
-    ('admin', 'ADMIN');
+    ('admin', 'ROLE_ADMIN');
