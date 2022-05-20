@@ -74,27 +74,38 @@ public class UserManager {
         return customer;
     }
 
-    public Customer fetchCustomerById(final String id) {
+    public Customer fetchCustomerById(final UUID id) {
         logger.info("Fetching customer by id");
-        val custId = UUID.fromString(id);
-        val fetchCustomerQuery = "SELECT C.id, user_id, email, first_name, last_name FROM customers AS C INNER JOIN user_information AS UI ON C.user_id = UI.id WHERE C.id = ?";
+        val fetchCustomerQuery = "SELECT user_id, email, first_name, last_name FROM customers AS C INNER JOIN user_information AS UI ON C.user_id = UI.id WHERE C.id = ?";
 
         return jdbcTemplate.queryForObject(fetchCustomerQuery, (rs, _rn) -> {
             val user = new User(UUID.fromString(rs.getString("user_id")));
+            user.setEmail(rs.getString("email"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
 
-            return mapCustomerDetails(custId, rs, user);
-        }, custId);
+            val customer = new Customer(id);
+            customer.setUserInformation(user);
+
+            return customer;
+        }, id);
     }
 
     public Customer fetchCustomerByUsername(final String username) {
         logger.info("Fetching customer details");
-        val fetchCustomerQuery = "SELECT c.id, user_id, email, first_name, last_name FROM customers AS c INNER JOIN user_information AS ui ON c.user_id = ui.id WHERE username = ?";
+        val fetchCustomerQuery = "SELECT C.id, user_id, email, first_name, last_name FROM customers AS C INNER JOIN user_information AS UI ON C.user_id = UI.id WHERE username = ?";
 
         return jdbcTemplate.queryForObject(fetchCustomerQuery, (rs, _rn) -> {
             val user = new User(UUID.fromString(rs.getString("user_id")));
             user.setUsername(username);
+            user.setEmail(rs.getString("email"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
 
-            return mapCustomerDetails(UUID.fromString(rs.getString("user_id")), rs, user);
+            val customer = new Customer(UUID.fromString(rs.getString("id")));
+            customer.setUserInformation(user);
+
+            return customer;
         }, username);
     }
 
@@ -113,10 +124,10 @@ public class UserManager {
         }, username);
     }
 
-    public User updateUserInformation(final String id, final EditCustomerForm form) throws SQLException {
+    public User updateUserInformation(final UUID id, final EditCustomerForm form) throws SQLException {
         logger.info("Editing User Details");
 
-        val user = new User(UUID.fromString(id));
+        val user = new User(id);
         user.setEmail(form.getEmail());
         user.setFirstName(form.getFirstName());
         user.setLastName(form.getLastName());

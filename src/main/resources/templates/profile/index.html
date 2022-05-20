@@ -11,6 +11,8 @@
     <div class="container">
         <h2 class="text-center text-dark py-4" th:text="${customer.getUserInformation().getUsername()}"></h2>
 
+        <a class="mb-3" th:href="@{/profile/edit/{id}(id=${customer.id})}">Edit Profile</a>
+
         <div class="row justify-content-center">
             <div class="col-sm">
                 <h5>First Name</h5>

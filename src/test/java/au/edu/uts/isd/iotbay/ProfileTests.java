@@ -17,12 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -93,18 +92,18 @@ public class ProfileTests {
 
         final Customer customer = new Customer(UUID.randomUUID(), user);
 
-        when(userManager.fetchCustomerById(customer.getId().toString()))
+        when(userManager.fetchCustomerById(customer.getId()))
                 .thenReturn(customer);
-        when(userManager.updateUserInformation(user.getId().toString(), form))
+        when(userManager.updateUserInformation(user.getId(), form))
                 .thenReturn(editedUser);
 
         mvc.perform(get("/profile/edit/" + customer.getId().toString())
                 .with(user(user.getUsername()).roles("CUSTOMER")))
                 .andExpect(status().isOk());
 
-        mvc.perform(put("/profile/edit/" + user.getId().toString())
-                        .with(user(user.getUsername()).roles("CUSTOMER"))
+        mvc.perform(post("/profile/edit/" + user.getId().toString())
                         .with(csrf())
+                        .with(user(user.getUsername()).roles("CUSTOMER"))
                         .param("email", form.getEmail())
                         .param("firstName", form.getFirstName())
                         .param("lastName", form.getLastName()))
