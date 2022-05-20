@@ -26,7 +26,7 @@ jobs:
         with:
           arguments: test
       - name: Upload Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.0.0
         with:
           name: Test report
           path: build/reports/tests/test
