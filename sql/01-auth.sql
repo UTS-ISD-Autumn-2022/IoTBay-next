@@ -51,4 +51,4 @@ INSERT INTO users (username, password, enabled)
 
 INSERT INTO authorities (username, authority)
     VALUES
-    ('admin', 'ADMIN');
+    ('admin', 'ROLE_ADMIN');
