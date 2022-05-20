@@ -52,7 +52,10 @@
                     <a class="nav-link text-dark" th:href="@{/profile}" sec:authentication="name"></a>
                 </li>
 
-                <li class="btn btn-outline-dark" th:href="@{/logout}">Logout</li>
+                <a class="btn btn-outline-dark" href="javascript: document.logoutForm.submit()">Logout</a>
+                <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                    <input hidden type="submit" value="Logout" />
+                </form>
             </ul>
             
             <div class="d-flex mx-2">
