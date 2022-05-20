@@ -34,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerPost(@Valid RegisterForm registerForm, BindingResult result, HttpServletRequest req) {
+    public String registerPost(@Valid RegisterForm registerForm, BindingResult result) {
         if (result.hasErrors()) {
             for (val e : result.getAllErrors())
                 logger.error(e.getDefaultMessage());
