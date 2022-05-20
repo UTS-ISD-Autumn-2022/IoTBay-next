@@ -68,23 +68,3 @@ public class ProfileTests {
                 .andExpect(view().name("profile/index"));
     }
 }
-/*
-    /**
-     * <h3>User Story:</h3>
-     *
-     * <ul>
-     *     <li><b>Given:</b> an anonymous user enters registration details</li>
-     *     <li><b>When:</b> </li>
-     * </ul>
-     *
-     * @result form has invalid field errors on null fields
-     */
-/*
-    @Test
-    @DisplayName("Test RegisterForm model for invalid field sizes")
-    void testNullFields() {
-    }
-
-
-}
-*/
