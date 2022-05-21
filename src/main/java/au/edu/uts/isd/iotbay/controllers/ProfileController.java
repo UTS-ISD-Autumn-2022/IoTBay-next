@@ -79,9 +79,15 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
-    @PostMapping("/delete/{id}")
-    public String customerDelete(@PathVariable("id") UUID id) throws Exception {
-        throw new Exception("Unimplemented");
-        // return "redirect:/logout";
+    @PostMapping("/delete/{username}")
+    public String customerDelete(@PathVariable("username") String username) {
+        try {
+            userManager.deleteUserByUsername(username);
+        } catch (Exception e) {
+            log.error("Could not delete user successfully", e);
+            return "error/500";
+        }
+
+        return "redirect:/logout";
     }
 }
