@@ -7,6 +7,7 @@ import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -15,8 +16,12 @@ import lombok.val;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.UUID;
 
+/**
+ * User Manager binds java to postgres sql database
+ */
 @Component
 public class UserManager {
     final String ADMIN = "ROLE_ADMIN";
@@ -42,6 +47,12 @@ public class UserManager {
         passwordEncoder = l_passwordEncoder;
     }
 
+    /**
+     * Register a new customer
+     * @param registerForm A new registration form object
+     * @return a newly created sql customer
+     * @throws Exception fails if data is invalid or if it cannot connect to database
+     */
     public Customer registerCustomer(RegisterForm registerForm) throws Exception {
         if (!registerForm.getPassword().equals(registerForm.getPasswordVerification())) {
             logger.error("User tried to enter non matching passwords");
@@ -53,7 +64,7 @@ public class UserManager {
 
         try {
             createUserIdentity(user.getUsername(), registerForm.getPassword());
-            addUserToCustomerAuthority(user.getUsername());
+            addUserToCustomerRole(user.getUsername());
 
             createUserInformation(
                     user.getId(),
@@ -74,6 +85,11 @@ public class UserManager {
         return customer;
     }
 
+    /**
+     * Get a customer by their UUID
+     * @param id a unique identifier of a customer
+     * @return Customer with UUID id
+     */
     public Customer fetchCustomerById(final UUID id) {
         logger.info("Fetching customer by id");
         val fetchCustomerQuery = "SELECT user_id, email, first_name, last_name FROM customers AS C INNER JOIN user_information AS UI ON C.user_id = UI.id WHERE C.id = ?";
@@ -91,6 +107,11 @@ public class UserManager {
         }, id);
     }
 
+    /**
+     * Get a customer by their username
+     * @param username a customers username/login credential
+     * @return Customer with a username of the input username
+     */
     public Customer fetchCustomerByUsername(final String username) {
         logger.info("Fetching customer details");
         val fetchCustomerQuery = "SELECT C.id, user_id, email, first_name, last_name FROM customers AS C INNER JOIN user_information AS UI ON C.user_id = UI.id WHERE username = ?";
@@ -144,15 +165,17 @@ public class UserManager {
         return user;
     }
 
-    private Customer mapCustomerDetails(UUID id, ResultSet rs, User user) throws SQLException {
-        user.setEmail(rs.getString("email"));
-        user.setFirstName(rs.getString("first_name"));
-        user.setLastName(rs.getString("last_name"));
+    /**
+     * Delete a user by their username, cascade deletes a user, so all associated tables are also deleted, can
+     * be used for both deleting regular users with roles as well as customers because of the cascade property
+     * @param username the users login username, acts as a central primary key for all associated data
+     * @throws DataAccessException SQL Exception in case of failure
+     */
+    public void deleteUserByUsername(final String username) throws DataAccessException {
+        logger.info("Deleting user {}", username);
 
-        val customer = new Customer(id);
-        customer.setUserInformation(user);
-
-        return customer;
+        val deleteUserQuery = "DELETE FROM users WHERE username = ?";
+        jdbcTemplate.update(deleteUserQuery, username);
     }
 
     private void createUserIdentity(final String username, final String rawPassword) throws Exception {
@@ -162,11 +185,18 @@ public class UserManager {
         jdbcTemplate.update(createUserQuery, username, passwordEncoder.encode(rawPassword), true);
     }
 
-    private void addUserToCustomerAuthority(final String username) throws Exception {
-        logger.info("Adding user " + username + "to Customer Authority");
+    private void addUserToCustomerRole(final String username) throws Exception {
+        logger.info("Adding user " + username + "to Customer Role");
 
         val createAuthorityQuery = "INSERT INTO authorities VALUES (?, ?)";
         jdbcTemplate.update(createAuthorityQuery, username, CUSTOMER);
+    }
+
+    private void addUserToRole(final String username, final String role) throws Exception {
+        logger.info("Adding user " + username + "to Employee Role");
+
+        val createAuthorityQuery = "INSERT INTO authorities VALUES (?, ?)";
+        jdbcTemplate.update(createAuthorityQuery, username, role.toUpperCase(Locale.ROOT));
     }
 
     private void createUserInformation(final UUID id, final String username, final String firstName,
