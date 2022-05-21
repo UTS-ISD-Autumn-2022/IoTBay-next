@@ -110,4 +110,15 @@ public class ProfileTests {
                 .andExpect(redirectedUrl("/profile"))
                 .andExpect(status().isFound());
     }
+
+    @Test
+    @DisplayName("UA-6: Delete Customer Account Test")
+    void testDeleteCustomerAccount() throws Exception {
+        log.info("UA-6: Delete Customer Account Test");
+
+        mvc.perform(post("/profile/delete/fakeuser")
+                .with(csrf()).with(user("fakeuser").roles("CUSTOMER")))
+                .andExpect(redirectedUrl("/logout"))
+                .andExpect(status().isTemporaryRedirect());
+    }
 }
