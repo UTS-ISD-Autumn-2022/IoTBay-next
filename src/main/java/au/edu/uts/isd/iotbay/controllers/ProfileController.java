@@ -80,7 +80,8 @@ public class ProfileController {
     }
 
     @PostMapping("/delete/{id}")
-    public String customerDelete(@PathVariable("id") String id) {
-        return "redirect:/logout";
+    public String customerDelete(@PathVariable("id") UUID id) throws Exception {
+        throw new Exception("Unimplemented");
+        // return "redirect:/logout";
     }
 }

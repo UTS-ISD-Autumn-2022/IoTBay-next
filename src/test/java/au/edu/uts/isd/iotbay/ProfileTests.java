@@ -110,4 +110,10 @@ public class ProfileTests {
                 .andExpect(redirectedUrl("/profile"))
                 .andExpect(status().isFound());
     }
+
+    @Test
+    @DisplayName("UA-6: Delete Customer Account Test")
+    void testDeleteCustomerAccount() {
+
+    }
 }
