@@ -3,7 +3,6 @@ package au.edu.uts.isd.iotbay.controllers;
 import au.edu.uts.isd.iotbay.models.dao.UserManager;
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import lombok.val;
@@ -34,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerPost(@Valid RegisterForm registerForm, BindingResult result, HttpServletRequest req) {
+    public String registerPost(@Valid RegisterForm registerForm, BindingResult result) {
         if (result.hasErrors()) {
             for (val e : result.getAllErrors())
                 logger.error(e.getDefaultMessage());

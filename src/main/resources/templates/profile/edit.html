@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments/layout.html :: layout_head(~{::title})">
+    <title>IoT Bay - User Profile</title>
+</head>
+
+<body>
+    <header th:insert="fragments/layout.html :: navbar"></header>
+
+    <div class="container">
+
+        <form th:action="@{/profile/edit/{id}(id=${user.id})}" th:object="${editCustomerForm}" method="post">
+            <div class="mb-3">
+                <label for="editEmail" class="form-label">Email</label>
+                <input id="editEmail" class="form-control" type="email" th:field="*{email}" placeholder="example@email.com" />
+                <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="editFirstName" class="form-label">First Name</label>
+                <input id="editFirstName" class="form-control" type="text" th:field="*{firstName}" placeholder="John" />
+                <span class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="editLastName" class="form-label">Last Name</label>
+                <input id="editLastname" class="form-control" type="text" th:field="*{lastName}" placeholder="Numapo" />
+                <span class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+            </div>
+
+            <button class="btn btn-primary text-light" type="submit">Submit</button>
+        </form>
+
+        <a class="text-dark link" th:href="@{/profile}">Back</a>
+    </div>
+
+
+    <footer class="footer">
+        <div class="container">
+            &copy; 2022 - IoTBay - <a>Privacy</a>
+        </div>
+    </footer>
+
+    <script src="/index.js"></script>
+</body>
+
+</html>

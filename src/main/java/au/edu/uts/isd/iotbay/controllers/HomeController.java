@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import au.edu.uts.isd.iotbay.models.dao.InventoryManager;
 
-import java.util.UUID;
-
 @Controller
 public class HomeController {
 
