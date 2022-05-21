@@ -119,6 +119,6 @@ public class ProfileTests {
         mvc.perform(post("/profile/delete/fakeuser")
                 .with(csrf()).with(user("fakeuser").roles("CUSTOMER")))
                 .andExpect(redirectedUrl("/logout"))
-                .andExpect(status().isFound());
+                .andExpect(status().isTemporaryRedirect());
     }
 }

@@ -1,3 +1,13 @@
+CREATE TABLE address (
+    id uuid PRIMARY KEY,
+    customer_id uuid NOT NULL REFERENCES customers (id) ON DELETE CASCADE,
+    street text NOT NULL,
+    suburb varchar (255) NOT NULL,
+    state varchar (255) NOT NULL,
+    postcode varchar (7) NOT NULL,
+    country varchar (255) NOT NULL
+);
+
 CREATE TYPE order_status
     AS ENUM ('processing', 'picked', 'packing', 'onboard_for_delivery');
 
