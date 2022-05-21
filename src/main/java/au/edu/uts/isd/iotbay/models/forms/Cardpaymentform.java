@@ -14,22 +14,42 @@ import javax.validation.constraints.Size;
 public class Cardpaymentform {
     @NotNull
     @Size (max = 255)
-    private String  card_name;
+    private String  _card_name;
    
     @NotNull
     @Size (max = 16)
-    private String card_number;
+    private int _card_number;
 
     @NotNull
     @Size (max = 3)
-    private String card_cvv;
+    private int _card_cvv;
    
     @NotNull
     @Max (value = 2) 
-    private int card_expiry_month;
+    private int _card_expiry_month;
     
     @NotNull
     @Max (value = 2)
-    private int card_expiry_year ; 
+    private int _card_expiry_year ;
 
+    /*public String get_card_name() {
+        return _card_name;
+    }
+
+    public int get_card_number() {
+        return _card_number;
+    }
+
+    public int get_card_cvc() {
+        return _card_cvv;
+    }
+
+    public int get_card_expiry_month() {
+        return _card_expiry_month;
+    }
+
+    public int get_card__expiry_year() {
+        return _card_expiry_year;
+    } 
+*/
 }

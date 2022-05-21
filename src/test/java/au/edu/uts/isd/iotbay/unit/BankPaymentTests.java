@@ -27,8 +27,7 @@ import org.hibernate.validator.internal.util.logging.LoggerFactory;
 @SpringBootTest
 @WebMvcTest(BankPaymentController.class)
 public class BankPaymentTests {
-    final Logger log = LoggerFactory.getLogger(BankPaymentTests.class);
-
+    
     @Autowired
     Validator validator;
 
@@ -42,9 +41,9 @@ public class BankPaymentTests {
     @Test
     @DisplayName("P-1: save bank payment details")
     void TestsaveBank_Payment() {
-        Bankpaymentform form = new Bankpaymentform();
+        Bank_Payment bank_Payment = new Bank_Payment(null, "john citizen" , 123456 , 654321);
 
-        int result = BankPaymentDao.saveBank_Payment(Bank_Payment);
+        int result = BankPaymentDao.saveBank_Payment(bank_Payment);
         assertTrue( result > 0);
     }
 
@@ -65,7 +64,7 @@ public class BankPaymentTests {
     @Test
     @DisplayName("P-4: delete bank payment details")
     void testdeleteBank_Payment() {
-        int result = BankPaymentDao.deleteBank_Payment(Bank_Payment);
+        int result = BankPaymentDao.deleteBank_Payment(bank_Payment);
         assertTrue( result > 0);
     }
 

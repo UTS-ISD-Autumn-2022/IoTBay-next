@@ -7,8 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import au.edu.uts.isd.iotbay.models.data.Bank_Payment;
-import au.edu.uts.isd.iotbay.models.data.BankPaymentDao;
-
+import au.edu.uts.isd.iotbay.models.forms.Bankpaymentform;
 
 import java.sql.ResultSet;
 import java.sql.RowId;
@@ -23,11 +22,11 @@ import javax.sql.DataSource;
 
 
 @Component
-public class BankPaymentManager implements BankPaymentDao {
+public abstract class BankPaymentManager implements BankPaymentDao {
     private final JdbcTemplate jdbcTemplate;
 
-    public BankPaymentManager(DataSource dataSource) {
-        this.jdbcTemplate =new  JdbcTemplate(dataSource);
+    public BankPaymentManager(JdbcTemplate jdbcTemplate) {
+        jdbcTemplate = jdbcTemplate;
     }
     
     @Override
@@ -39,7 +38,7 @@ public class BankPaymentManager implements BankPaymentDao {
     @Override
     public int  UpdateBank_Payment (Bank_Payment bpbank_Payment){
         String sql = "UPDATE BANK_PAYMENT BANK_NAME=? , BANK_ACCOUNT_NUMBER=? ,BSB_NUMBER=? WHERE id=?";
-        return jdbcTemplate.update(sql , bpbank_Payment.get_BANK_NAME(), bpbank_Payment.get_BANK_ACCOUNT_NUMBER(),bpbank_Payment.get_BSB_NUMBER())
+        return jdbcTemplate.update(sql , bpbank_Payment.get_BANK_NAME(), bpbank_Payment.get_BANK_ACCOUNT_NUMBER(),bpbank_Payment.get_BSB_NUMBER());
     }
 
     @Override

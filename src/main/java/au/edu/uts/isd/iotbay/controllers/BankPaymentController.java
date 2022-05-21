@@ -32,27 +32,27 @@ public class BankPaymentController {
     }
     @GetMapping("/Bank_Payment/{_id}")
     private Bank_Payment getBank_Payment(@PathVariable("id")UUID _id){
-        return BankPaymentDao.getBank_Payment(_id);
+        return BankPaymentManager.getBank_Payment(_id);
     }
 
     //creating a delete mapping that deletes a specified bank payment 
 
     @DeleteMapping("/Bank_payment/{_id}")
     public void deleteBank_Payment(@PathVariable("id")UUID _id){
-        BankPaymentDao.deleteBank_Payment(_id);
+        BankPaymentManager.deleteBank_Payment(_id);
     }
     //creating post mapping that post the Bank Payment Details into the database 
 
     @PostMapping ("/Bank_Payment")
-    private int saveBank_Payment(@RequestBody Bank_Payment bank_Payment){
-        BankPaymentDao.saveorUpdateBank_Payment(bank_Payment);
+    private UUID saveBank_Payment(@RequestBody Bank_Payment bank_Payment){
+        BankPaymentManager.UpdateBank_Payment(bank_Payment);
         return Bank_Payment.get_id();
     }
 
     //creating put mapping that updates the Bank Payment Details
     @PutMapping    ("/Bank_Payment")
     private Bank_Payment UpdateBank_Payment(@RequestBody Bank_Payment bank_Payment){
-        BankPaymentDao.UpdateBank_Payment(bank_Payment);
+        BankPaymentManager.UpdateBank_Payment(bank_Payment);
         return bank_Payment;
     }
 

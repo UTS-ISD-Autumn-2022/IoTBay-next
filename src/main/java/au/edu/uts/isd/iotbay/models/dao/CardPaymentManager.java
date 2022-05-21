@@ -13,6 +13,8 @@ import au.edu.uts.isd.iotbay.models.data.Card_payment;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.List;
+import java.sql.RowId;
 
 import javax.sql.DataSource;
 
@@ -21,7 +23,7 @@ import javax.sql.DataSource;
 
 
 @Component
-public class CardPaymentManager implements CardPaymentDao {
+public abstract class  CardPaymentManager implements CardPaymentDao {
     private final JdbcTemplate jdbcTemplate;
 
     public CardPaymentManager(DataSource dataSource) {
