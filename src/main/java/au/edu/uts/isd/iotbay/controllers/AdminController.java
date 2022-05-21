@@ -10,7 +10,7 @@ public class AdminController {
     final Logger log = LoggerFactory.getLogger(AdminController.class);
 
     @GetMapping("/admin")
-    public String AdminGet() {
+    public String adminGet() {
         return "admin";
     }
 }

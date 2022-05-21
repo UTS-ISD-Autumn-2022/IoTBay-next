@@ -4,6 +4,7 @@ import au.edu.uts.isd.iotbay.models.data.Customer;
 import au.edu.uts.isd.iotbay.models.data.User;
 import au.edu.uts.isd.iotbay.models.forms.EditCustomerForm;
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
+import au.edu.uts.isd.iotbay.models.forms.UserForm;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,28 +15,32 @@ import org.springframework.stereotype.Component;
 
 import lombok.val;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * User Manager binds java to postgres sql database
  */
 @Component
 public class UserManager {
-    final String ADMIN = "ROLE_ADMIN";
-    final String CUSTOMER = "ROLE_CUSTOMER";
-    final String EMPLOYEE = "ROLE_EMPLOYEE";
+    @Getter
+    final String adminRole = "ROLE_ADMIN";
 
     @Getter
-    final String REGISTER_ACTION = "REGISTER";
+    final String customerRole = "ROLE_CUSTOMER";
 
     @Getter
-    final String LOGIN_ACTION = "LOGIN";
+    final String employeeRole = "ROLE_EMPLOYEE";
 
     @Getter
-    final String EDIT_ACTION = "EDIT";
+    final String registerAction = "REGISTER";
+
+    @Getter
+    final String loginAction = "LOGIN";
+
+    @Getter
+    final String editAction = "EDIT";
 
     final Logger logger = LoggerFactory.getLogger(UserManager.class);
 
@@ -80,7 +85,7 @@ public class UserManager {
             throw new Exception("Registration Error!");
         }
 
-        logPersist(user.getUsername(), REGISTER_ACTION);
+        logPersist(user.getUsername(), registerAction);
 
         return customer;
     }
@@ -90,7 +95,7 @@ public class UserManager {
      * @param id a unique identifier of a customer
      * @return Customer with UUID id
      */
-    public Customer fetchCustomerById(final UUID id) {
+    public Customer fetchCustomerById(final UUID id) throws DataAccessException {
         logger.info("Fetching customer by id");
         val fetchCustomerQuery = "SELECT user_id, email, first_name, last_name FROM customers AS C INNER JOIN user_information AS UI ON C.user_id = UI.id WHERE C.id = ?";
 
@@ -111,8 +116,9 @@ public class UserManager {
      * Get a customer by their username
      * @param username a customers username/login credential
      * @return Customer with a username of the input username
+     * @throws DataAccessException SQL Exception in case of failure
      */
-    public Customer fetchCustomerByUsername(final String username) {
+    public Customer fetchCustomerByUsername(final String username) throws DataAccessException {
         logger.info("Fetching customer details");
         val fetchCustomerQuery = "SELECT C.id, user_id, email, first_name, last_name FROM customers AS C INNER JOIN user_information AS UI ON C.user_id = UI.id WHERE username = ?";
 
@@ -130,8 +136,36 @@ public class UserManager {
         }, username);
     }
 
-    public User fetchUserInformationByUsername(final String username) {
-        logger.info("Fetching user details");
+    public User createUser(final UserForm userForm) throws DataAccessException {
+        logger.info("Creating new user {}", userForm.getUsername());
+
+        val user = new User(userForm);
+        createUserIdentity(userForm.getUsername(), passwordEncoder.encode(userForm.getPassword()));
+        createUserInformation(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail());
+
+        return user;
+    }
+
+    public void addUserToCustomerRole(final String username) throws DataAccessException {
+        addUserToRole(username, customerRole);
+    }
+
+    public void addUserToEmployeeRole(final String username) throws DataAccessException {
+        addUserToRole(username, employeeRole);
+    }
+
+    public void addUserToAdminRole(final String username) throws DataAccessException {
+        addUserToRole(username, adminRole);
+    }
+
+    /**
+     * Get a users information by their username
+     * @param username a users username credential
+     * @return A user with username
+     * @throws DataAccessException SQL Exception with data access information
+     */
+    public User fetchUserByUsername(final String username) throws DataAccessException {
+        logger.info("Fetching user details by username: {}", username);
 
         val fetchUserQuery = "SELECT * FROM user_information WHERE username = ?";
         return jdbcTemplate.queryForObject(fetchUserQuery, (rs, _rc) -> {
@@ -145,7 +179,48 @@ public class UserManager {
         }, username);
     }
 
-    public User updateUserInformation(final UUID id, final EditCustomerForm form) throws SQLException {
+    /**
+     * Fetch a user by their uuid
+     * @param id a uuid assigned to the user, readonly
+     * @return a user with given uuid
+     * @throws DataAccessException A database access exception
+     */
+    public User fetchUserById(final UUID id) throws DataAccessException {
+        logger.info("Fetching user details by id: " + id.toString());
+
+        val fetchUserQuery = "SELECT (username, first_name, last_name, email) FROM user_information WHERE id = ?";
+        return jdbcTemplate.queryForObject(fetchUserQuery, (rs, _rc) -> {
+            val user = new User(id);
+            user.setUsername(rs.getString("username"));
+            user.setEmail(rs.getString("email"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
+
+            return user;
+        }, id);
+    }
+
+    /**
+     * Fetch all users as a stream
+     * @return a stream of users for efficient filtering
+     * @throws DataAccessException A Data access error for postgres database
+     */
+    public Stream<User> fetchUsers()  throws DataAccessException {
+        logger.info("Fetching all users");
+
+        val fetchUsersQuery = "SELECT (id, username, first_name, last_name, email) FROM user_information";
+        return jdbcTemplate.queryForStream(fetchUsersQuery, (rs, _rc) -> {
+            val user = new User(UUID.fromString(rs.getString("id")));
+            user.setUsername(rs.getString("username"));
+            user.setEmail(rs.getString("email"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
+
+            return user;
+        });
+    }
+
+    public User updateUserInformation(final UUID id, final EditCustomerForm form) throws DataAccessException {
         logger.info("Editing User Details");
 
         val user = new User(id);
@@ -178,21 +253,15 @@ public class UserManager {
         jdbcTemplate.update(deleteUserQuery, username);
     }
 
-    private void createUserIdentity(final String username, final String rawPassword) throws Exception {
+    private void createUserIdentity(final String username, final String rawPassword) throws DataAccessException {
         logger.info("Creating new user with username " + username);
 
         val createUserQuery = "INSERT INTO users (username, password, enabled) VALUES (?, ?, ?)";
         jdbcTemplate.update(createUserQuery, username, passwordEncoder.encode(rawPassword), true);
     }
 
-    private void addUserToCustomerRole(final String username) throws Exception {
-        logger.info("Adding user " + username + "to Customer Role");
 
-        val createAuthorityQuery = "INSERT INTO authorities VALUES (?, ?)";
-        jdbcTemplate.update(createAuthorityQuery, username, CUSTOMER);
-    }
-
-    private void addUserToRole(final String username, final String role) throws Exception {
+    private void addUserToRole(final String username, final String role) throws DataAccessException {
         logger.info("Adding user " + username + "to Employee Role");
 
         val createAuthorityQuery = "INSERT INTO authorities VALUES (?, ?)";
@@ -200,7 +269,7 @@ public class UserManager {
     }
 
     private void createUserInformation(final UUID id, final String username, final String firstName,
-            final String lastName, final String email) throws Exception {
+            final String lastName, final String email) throws DataAccessException {
 
         logger.info("Creating user information for " + username);
 
@@ -216,14 +285,14 @@ public class UserManager {
                 email);
     }
 
-    private void createCustomer(final UUID id, final UUID userId) throws Exception {
+    private void createCustomer(final UUID id, final UUID userId) throws DataAccessException {
         logger.info("Creating customer table");
 
         val createCustomerQuery = "INSERT INTO customers (id, user_id) VALUES (?, ?)";
         jdbcTemplate.update(createCustomerQuery, id, userId);
     }
 
-    public void logPersist(final String username, final String action) throws SQLException {
+    public void logPersist(final String username, final String action) throws DataAccessException {
         logger.info("Logging action " + action + "by user " + username);
 
         val createLogQuery = "INSERT INTO auth_log (id, username, log_action) VALUES (?, ?, ?)";
