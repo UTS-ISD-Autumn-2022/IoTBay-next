@@ -49,3 +49,5 @@ INSERT INTO users (username, password, enabled)
 INSERT INTO authorities (username, authority)
     VALUES
     ('admin', 'ROLE_ADMIN');
+
+SELECT C.id, user_id, email, first_name, last_name FROM customers AS C INNER JOIN user_information AS UI ON C.user_id = UI.id;

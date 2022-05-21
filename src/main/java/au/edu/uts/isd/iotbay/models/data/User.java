@@ -2,10 +2,7 @@ package au.edu.uts.isd.iotbay.models.data;
 
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Data
