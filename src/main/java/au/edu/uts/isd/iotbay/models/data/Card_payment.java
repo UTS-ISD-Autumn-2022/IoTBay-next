@@ -1,9 +1,14 @@
 package au.edu.uts.isd.iotbay.models.data;
 
+import java.util.UUID;
+
+import au.edu.uts.isd.iotbay.models.forms.Cardpaymentform;
+
+
 
 
 public class Card_payment  implements java.io.Serializable {
-    final int _id;
+    UUID _id;
     String _card_name ;
     int _card_number ;
     int _card_cvc ;
@@ -11,58 +16,31 @@ public class Card_payment  implements java.io.Serializable {
    int _card_expiry_year;
 
 
-    public Card_payment (int id,String card_name ,int card_number ,int card_cvc ,int card_expiry_month , int card_expiry_year){
-_id = id;
-_card_name=card_name;
-_card_number=card_number;
-_card_cvc=card_cvc;
-_card_expiry_month=card_expiry_month;
-_card_expiry_year=card_expiry_year;
-    }
+    public Card_payment (UUID _id,String card_name ,int card_number ,int card_cvc ,int card_expiry_month , int card_expiry_year){
+
+        this(card_name , card_number , card_cvc ,card_expiry_month , card_expiry_year);
+        this._id = _id;
 
 
-    public int get_id() {
-        return  _id;
     }
 
+    public Card_payment (String card_name ,int card_number ,int card_cvc ,int card_expiry_month , int card_expiry_year){
+        
+       this. _card_name=card_name;
+       this. _card_number=card_number;
+       this. _card_cvc=card_cvc;
+       this. _card_expiry_month=card_expiry_month;
+       this._card_expiry_year=card_expiry_year;
+            }
 
-    public String get_card_name() {
-        return _card_name;
-    }
+public Card_payment (Cardpaymentform cardpaymentform){
 
-    public void set_card_name(String card_name) {
-       _card_name = card_name;
-    }
+     _id=UUID.randomUUID();
+     _card_name=cardpaymentform.get_card_name() ;
+     _card_number=cardpaymentform.get_card_number() ;
+     _card_cvc =cardpaymentform.get_card_cvc();
+    _card_expiry_month=cardpaymentform.get_card_expiry_month();
+    _card_expiry_year=cardpaymentform.get_card__expiry_year();
+}
 
-    public int get_card_number() {
-       return  _card_number;
-    }
-
-    public void set_card_number(int card_number) {
-        _card_number = card_number;
-    }
-
-    public int get_card_cvc() {
-       return  _card_cvc;
-    }
-
-    public void set_card_cvc(int card_cvc) {
-        _card_cvc = card_cvc;
-    }
-
-    public int get_card_expiry_month() {
-        return _card_expiry_month;
-    }
-
-    public void set_card_expiry_month(int card_expiry_month) {
-        _card_expiry_month = card_expiry_month;
-    }
-    public int get_card_expiry_year() {
-        return _card_expiry_year;
-    }
-
-    public void set_card_expiry_year(int card_expiry_year) {
-        _card_expiry_year = card_expiry_year;
-    }
- 
 }
