@@ -61,8 +61,8 @@ public class ProfileController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editPost(@PathVariable("id") UUID id, @Valid EditCustomerForm form, BindingResult result) {
-        log.info("PUT: /profile/edit/" + id);
+    public String editPost(@PathVariable("id") UUID id, @ModelAttribute @Valid EditCustomerForm editCustomerForm, BindingResult result) {
+        log.info("POST: /profile/edit/" + id);
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach((e) -> log.warn("Field Error: {}", e));
@@ -70,13 +70,13 @@ public class ProfileController {
         }
 
         try {
-            userManager.updateUserInformation(id, form);
+            userManager.updateUserInformation(id, editCustomerForm);
         } catch (Exception ex) {
             log.error("SQL Exception", ex);
             return "error/500";
         }
 
-        return "profile/edit";
+        return "redirect:/profile";
     }
 
     @PostMapping("/delete/{id}")

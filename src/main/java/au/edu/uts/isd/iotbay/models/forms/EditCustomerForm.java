@@ -6,10 +6,11 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-public class EditCustomerForm {
+public class EditCustomerForm implements Serializable {
     @Email
     @Size(max = 255)
     @NotNull

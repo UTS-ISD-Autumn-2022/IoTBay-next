@@ -4,10 +4,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-public class RegisterForm {
+public class RegisterForm implements Serializable {
     @Size(max = 50)
     @NotNull
     private String username;
