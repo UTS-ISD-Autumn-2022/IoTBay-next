@@ -62,7 +62,7 @@ public class BankPaymentController {
         }
 
         try {
-            Bankpaymentimp.UpdateBank_Payment (UUID id ,bankpaymentform);
+            Bankpaymentimp.UpdateBank_Payment (UUID ,bankpaymentform);
         } catch (Exception ex) {
             log.error("SQL Exception", ex);
             return "error/500";
