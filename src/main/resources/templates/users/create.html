@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head th:replace="fragments/layout.html :: layout_head(~{::title})">
-    <title>iot bay - create new user</title>
+    <title>Iot Bay - create new user</title>
 </head>
 
 <body>
@@ -12,16 +12,16 @@
         <h2 class="text-center text-dark mb-2">Create User</h2>
 
         <div class="register-card">
-            <form th:action="@{/admin/users/create}" th:object="${form}" method="post">
+            <form th:action="@{/admin/users/create}" th:object="${userForm}" method="post">
                 <h2>New User</h2>
 
                 <hr />
 
                 <div class="register-card-body">
                     <div class="register-col-12">
+                        <label for="newUserUsername" class="form-label">Username</label>
                         <input id="newUserUsername" th:field="*{username}" class="form-control" type="text"
                             placeholder="ExampleUsername" aria-required="true" />
-                        <label for="newUserUsername" class="form-label">Username</label>
                         <span class="text-danger" th:if="${#fields.hasErrors('username')}"
                             th:errors="*{username}"></span>
                     </div>
@@ -58,29 +58,14 @@
                         <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                     </div>
 
-                    <div class="register-col-12">
-                        <input id="newUserIsCustomer" type="checkbox" name="isCustomer" th:field="*{isCustomer}" />
-                        <label for="newUserIsCustomer" class="form-label">Add user to admin role</label>
-                    </div>
-
-                    <div class="register-col-12">
-                        <input id="newUserIsStaff" type="checkbox" name="isStaff" th:field="*{isStaff}" />
-                        <label for="newUserIsStaff" class="form-label">Add user to admin role</label>
-                    </div>
-
-                    <div class="register-col-12">
-                        <input id="newUserIsAdmin" type="checkbox" name="isAdmin" th:field="*{isAdmin}" />
-                        <label for="newUserIsAdmin" class="form-label">Add user to admin role</label>
-                    </div>
-
                     <div>
                         <button id="newUserSubmit" type="submit"
-                            class="btn btn-lg btn-primary text-light">Register</button>
+                            class="btn btn-lg btn-primary text-light">Create User</button>
                     </div>
 
                     <div>
                         <p>
-                            <a class="nav-link text-dark" th:href="@{/login}">Login with existing account.</a>
+                            <a class="nav-link text-dark" th:href="@{/admin/users}">Back</a>
                         </p>
                     </div>
                 </div>

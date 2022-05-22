@@ -29,7 +29,7 @@ public class UserController {
         log.info("GET /admin/users");
 
         try {
-            //val users = userManager.fetchUsers().toList();
+            // val users = userManager.fetchUsers().toList();
             val users = userManager.fetchUsers().collect(Collectors.toList());
             model.addAttribute("users", users);
         } catch (Exception ex) {
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String createUserPost(@ModelAttribute @Valid UserForm form, BindingResult result) {
+    public String createUserPost(@ModelAttribute @Valid UserForm userForm, BindingResult result) {
         log.info("POST /admin/users/create");
 
         if (result.hasErrors()) {
@@ -59,16 +59,8 @@ public class UserController {
         }
 
         try {
-            val user = userManager.createUser(form);
+            userManager.createUser(userForm);
 
-            if (form.isCustomer())
-                userManager.addUserToCustomerRole(user.getUsername());
-
-            if (form.isStaff())
-                userManager.addUserToEmployeeRole(user.getUsername());
-
-            if (form.isAdmin())
-                userManager.addUserToAdminRole(user.getUsername());
         } catch (Exception ex) {
             log.error("SQL Exception", ex);
 
@@ -90,7 +82,6 @@ public class UserController {
             userForm.setLastName(user.getLastName());
             userForm.setEmail(user.getEmail());
 
-            userManager.setRoles(userForm);
         } catch (Exception ex) {
             log.error("SQL Exception", ex);
 
@@ -101,7 +92,8 @@ public class UserController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editUserPost(@PathVariable("id") UUID id, @ModelAttribute @Valid UserForm userForm, BindingResult result) {
+    public String editUserPost(@PathVariable("id") UUID id, @ModelAttribute @Valid UserForm userForm,
+            BindingResult result) {
         log.info("GET /admin/users/edit/" + id.toString());
 
         if (result.hasErrors()) {

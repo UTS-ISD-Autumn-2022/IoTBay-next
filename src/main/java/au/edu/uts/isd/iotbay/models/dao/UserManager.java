@@ -290,19 +290,6 @@ public class UserManager {
         jdbcTemplate.update(deleteUserQuery, username);
     }
 
-    public UserForm setRoles(final UserForm userForm) throws DataAccessException {
-        val queryRoles = "SELECT * FROM authorities WHERE username = ?";
-        val roles = jdbcTemplate.queryForStream(queryRoles,(rs, rc) -> {
-            return new Role(rs.getString("username"), rs.getString("authority"));
-        }, userForm.getUsername());
-
-        userForm.setCustomer(roles.anyMatch((role) -> role.isRole(customerRole)));
-        userForm.setStaff(roles.anyMatch((role) -> role.isRole(employeeRole)));
-        userForm.setAdmin(roles.anyMatch((role) -> role.isRole(adminRole)));
-
-        return userForm;
-    }
-
     @AllArgsConstructor
     private class Role {
         private String username;
