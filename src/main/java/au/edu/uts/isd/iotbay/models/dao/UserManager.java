@@ -5,6 +5,8 @@ import au.edu.uts.isd.iotbay.models.data.User;
 import au.edu.uts.isd.iotbay.models.forms.EditCustomerForm;
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
 import au.edu.uts.isd.iotbay.models.forms.UserForm;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -251,6 +253,29 @@ public class UserManager {
 
         val deleteUserQuery = "DELETE FROM users WHERE username = ?";
         jdbcTemplate.update(deleteUserQuery, username);
+    }
+
+    public UserForm setRoles(final UserForm userForm) throws DataAccessException {
+        val queryRoles = "SELECT * FROM authorities WHERE username = ?";
+        val roles = jdbcTemplate.queryForStream(queryRoles,(rs, rc) -> {
+            return new Role(rs.getString("username"), rs.getString("authority"));
+        }, userForm.getUsername());
+
+        userForm.setCustomer(roles.anyMatch((role) -> role.isRole(customerRole)));
+        userForm.setStaff(roles.anyMatch((role) -> role.isRole(employeeRole)));
+        userForm.setAdmin(roles.anyMatch((role) -> role.isRole(adminRole)));
+
+        return userForm;
+    }
+
+    @AllArgsConstructor
+    private class Role {
+        private String username;
+        private String authority;
+
+        public boolean isRole(final String role) {
+            return role.equals(authority);
+        }
     }
 
     private void createUserIdentity(final String username, final String rawPassword) throws DataAccessException {
