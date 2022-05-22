@@ -8,7 +8,7 @@
     <header th:insert="fragments/layout.html :: navbar"></header>
 
     <div class="login-container">
-        <div class="login-card">
+        <span class="login-card">
             <form method="post" th:action="@{/login}">
 
                 <h2>Login</h2>
@@ -26,11 +26,11 @@
                         <label for="loginPassword" class="form-label">Password</label>
                     </div>
 
-                    <div th:if="${param.error}" class="invalid-feedback">Invalid login details.</div>
-                    <div th:if="${param.logout}" class="invalid-feedback">You have been logged out.</div>
-
-                    <button id="loginSubmit" type="submit" class="btn btn-lg btn-primary text-light">Login</button>
+                    <span th:if="${param.error}" class="text-danger">Invalid login details.</span>
+                    <span th:if="${param.logout}" class="text-danger">You have been logged out.</span>
                 </div>
+
+                <button id="loginSubmit" type="submit" class="btn btn-lg btn-primary text-light">Login</button>
             </form>
         </div>
     </div>

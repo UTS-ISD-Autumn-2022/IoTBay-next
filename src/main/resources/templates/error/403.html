@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/layout.html :: layout_head(~{::title})">
+    <title>403</title>
+</head>
+
+<body>
+    <header th:insert="fragments/layout.html :: navbar"></header>
+
+    <div class="container-md">
+        <h1>403 Forbidden</h1>
+        <h3>It looks like you don't have access to this part of the site, please log in with a valid account.</h3>
+        <a th:href="@{/}" class="link-info">Return Home</a>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

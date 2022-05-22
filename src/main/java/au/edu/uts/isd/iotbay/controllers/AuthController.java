@@ -9,15 +9,11 @@ import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Optional;
 
 @Controller
 public class AuthController {
@@ -52,6 +48,6 @@ public class AuthController {
             return "register";
         }
 
-        return "index";
+        return "redirect:/login";
     }
 }

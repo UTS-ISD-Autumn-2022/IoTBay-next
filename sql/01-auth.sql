@@ -26,12 +26,19 @@ CREATE TABLE customers (
 
 CREATE TABLE address (
     id uuid PRIMARY KEY,
-    customer_id uuid REFERENCES customers (id),
+    customer_id uuid REFERENCES customers (id) NOT NULL,
     street text NOT NULL,
     suburb varchar (255) NOT NULL,
     state varchar (255) NOT NULL,
     postcode varchar (7) NOT NULL,
     country varchar (255) NOT NULL
+);
+
+CREATE TABLE auth_log (
+    id uuid PRIMARY KEY,
+    username varchar(50) REFERENCES users (username) NOT NULL,
+    log_time timestamp NOT NULL DEFAULT now(),
+    log_action varchar (32) NOT NULL
 );
 
 -- admin password is StrongPassword
@@ -41,4 +48,6 @@ INSERT INTO users (username, password, enabled)
 
 INSERT INTO authorities (username, authority)
     VALUES
-    ('admin', 'ADMIN');
+    ('admin', 'ROLE_ADMIN');
+
+SELECT C.id, user_id, email, first_name, last_name FROM customers AS C INNER JOIN user_information AS UI ON C.user_id = UI.id;

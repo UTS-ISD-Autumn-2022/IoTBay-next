@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments/layout.html :: layout_head(~{::title})">
+    <title>IoT Bay - Admin Portal</title>
+</head>
+
+<body>
+    <header th:insert="fragments/layout.html :: navbar"></header>
+
+    <div class="container-md">
+        <h2 class="text-center text-dark">Profile Management</h2>
+
+        <a th:href="@{/profile/payment}">Manage Payment Methods</a>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            &copy; 2022 - IoTBay - <a>Privacy</a>
+        </div>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+
+</html>

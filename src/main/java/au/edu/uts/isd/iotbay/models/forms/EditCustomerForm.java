@@ -3,24 +3,14 @@ package au.edu.uts.isd.iotbay.models.forms;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-public class RegisterForm implements Serializable {
-    @Size(max = 50)
-    @NotNull
-    private String username;
-    
-    @Size(min = 8)
-    @NotNull
-    private String password;
-
-    @Size(min = 8)
-    @NotNull
-    private String passwordVerification;
-
+public class EditCustomerForm implements Serializable {
     @Email
     @Size(max = 255)
     @NotNull
