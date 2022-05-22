@@ -9,9 +9,11 @@
     <header th:insert="fragments/layout.html :: navbar"></header>
 
     <div class="container-md">
-        <h2 class="text-center text-dark">Profile Management</h2>
+        <h2 class="text-center text-dark">Admin Portal</h2>
+    </div>
 
-        <a th:href="@{/profile/payment}">Manage Payment Methods</a>
+    <div class="container-md">
+        <a th:href="@{/admin/users}">Manage Users</a>
     </div>
 
     <footer class="footer">

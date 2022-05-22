@@ -54,9 +54,11 @@ public class UserManager {
 
     /**
      * Register a new customer
+     * 
      * @param registerForm A new registration form object
      * @return a newly created sql customer
-     * @throws Exception fails if data is invalid or if it cannot connect to database
+     * @throws Exception fails if data is invalid or if it cannot connect to
+     *                   database
      */
     public Customer registerCustomer(RegisterForm registerForm) throws Exception {
         if (!registerForm.getPassword().equals(registerForm.getPasswordVerification())) {
@@ -92,6 +94,7 @@ public class UserManager {
 
     /**
      * Get a customer by their UUID
+     * 
      * @param id a unique identifier of a customer
      * @return Customer with UUID id
      */
@@ -114,6 +117,7 @@ public class UserManager {
 
     /**
      * Get a customer by their username
+     * 
      * @param username a customers username/login credential
      * @return Customer with a username of the input username
      * @throws DataAccessException SQL Exception in case of failure
@@ -141,7 +145,8 @@ public class UserManager {
 
         val user = new User(userForm);
         createUserIdentity(userForm.getUsername(), passwordEncoder.encode(userForm.getPassword()));
-        createUserInformation(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail());
+        createUserInformation(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(),
+                user.getEmail());
 
         return user;
     }
@@ -160,6 +165,7 @@ public class UserManager {
 
     /**
      * Get a users information by their username
+     * 
      * @param username a users username credential
      * @return A user with username
      * @throws DataAccessException SQL Exception with data access information
@@ -181,6 +187,7 @@ public class UserManager {
 
     /**
      * Fetch a user by their uuid
+     * 
      * @param id a uuid assigned to the user, readonly
      * @return a user with given uuid
      * @throws DataAccessException A database access exception
@@ -202,13 +209,14 @@ public class UserManager {
 
     /**
      * Fetch all users as a stream
+     * 
      * @return a stream of users for efficient filtering
      * @throws DataAccessException A Data access error for postgres database
      */
-    public Stream<User> fetchUsers()  throws DataAccessException {
+    public Stream<User> fetchUsers() throws DataAccessException {
         logger.info("Fetching all users");
 
-        val fetchUsersQuery = "SELECT (id, username, first_name, last_name, email) FROM user_information";
+        val fetchUsersQuery = "SELECT * FROM user_information";
         return jdbcTemplate.queryForStream(fetchUsersQuery, (rs, _rc) -> {
             val user = new User(UUID.fromString(rs.getString("id")));
             user.setUsername(rs.getString("username"));
@@ -241,9 +249,13 @@ public class UserManager {
     }
 
     /**
-     * Delete a user by their username, cascade deletes a user, so all associated tables are also deleted, can
-     * be used for both deleting regular users with roles as well as customers because of the cascade property
-     * @param username the users login username, acts as a central primary key for all associated data
+     * Delete a user by their username, cascade deletes a user, so all associated
+     * tables are also deleted, can
+     * be used for both deleting regular users with roles as well as customers
+     * because of the cascade property
+     * 
+     * @param username the users login username, acts as a central primary key for
+     *                 all associated data
      * @throws DataAccessException SQL Exception in case of failure
      */
     public void deleteUserByUsername(final String username) throws DataAccessException {
@@ -259,7 +271,6 @@ public class UserManager {
         val createUserQuery = "INSERT INTO users (username, password, enabled) VALUES (?, ?, ?)";
         jdbcTemplate.update(createUserQuery, username, passwordEncoder.encode(rawPassword), true);
     }
-
 
     private void addUserToRole(final String username, final String role) throws DataAccessException {
         logger.info("Adding user " + username + "to Employee Role");

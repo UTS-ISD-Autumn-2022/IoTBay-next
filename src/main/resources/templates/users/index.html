@@ -2,16 +2,37 @@
 <html lang="en">
 
 <head th:replace="fragments/layout.html :: layout_head(~{::title})">
-    <title>IoT Bay - Admin Portal</title>
+    <title>IoT Bay - Users Management</title>
 </head>
 
 <body>
     <header th:insert="fragments/layout.html :: navbar"></header>
 
     <div class="container-md">
-        <h2 class="text-center text-dark">Profile Management</h2>
+        <h2 class="text-center text-dark">Users Management</h2>
 
-        <a th:href="@{/profile/payment}">Manage Payment Methods</a>
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <th scope="row" th:text="${{user.username}}"></th>
+                    <td th:text="${{user.email}}"></td>
+                    <td th:text="${{user.firstName}}"></td>
+                    <td th:text="${{user.lastName}}"></td>
+                    <td><a class="link">edit</a></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <a th:href="@{/admin}">Back</a>
     </div>
 
     <footer class="footer">
