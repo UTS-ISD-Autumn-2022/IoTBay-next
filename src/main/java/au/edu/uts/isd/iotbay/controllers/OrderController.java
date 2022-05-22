@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/order")
 public class OrderController {
 
     @Autowired
@@ -20,7 +19,7 @@ public class OrderController {
     @Autowired
     OrderManager orderManager;
 
-    @GetMapping("/orders")
+    @GetMapping("/profile/orders")
     public String orderGet(@AuthenticationPrincipal User customer) {
         final Customer c = userManager.fetchCustomerByUsername(customer.getUsername());
         return "orders/index";
