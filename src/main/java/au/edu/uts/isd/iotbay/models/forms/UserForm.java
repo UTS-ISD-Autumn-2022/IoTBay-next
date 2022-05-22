@@ -30,12 +30,11 @@ public class UserForm {
     private String lastName;
 
     @NotNull
-    private
-    boolean isCustomer;
+    private boolean isCustomer;
 
     @NotNull
-    boolean isStaff;
+    private boolean isStaff;
 
     @NotNull
-    boolean isAdmin;
+    private boolean isAdmin;
 }

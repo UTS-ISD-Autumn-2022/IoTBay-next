@@ -11,7 +11,7 @@
     <div class="container-md">
         <h2 class="text-center text-dark mb-2">Users Management</h2>
 
-        <a class="link">Add new user</a>
+        <a th:href="@{/admin/users/create}" class="link">Add new user</a>
 
         <table class="table">
             <thead class="table-dark">
@@ -29,12 +29,12 @@
                     <td th:text="${{user.email}}"></td>
                     <td th:text="${{user.firstName}}"></td>
                     <td th:text="${{user.lastName}}"></td>
-                    <td><a class="link">edit</a></td>
+                    <td><a class="link" th:href="@{/admin/users/edit/{id}(id=user.id)}">edit</a></td>
                 </tr>
             </tbody>
         </table>
-        
-        <a th:href="@{/admin}">Back</a>
+
+        <a class="link text-dark" th:href="@{/admin}">Back</a>
     </div>
 
     <footer class="footer">
