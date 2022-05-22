@@ -28,4 +28,14 @@ public class UserForm {
     @Size(max = 63)
     @NotNull
     private String lastName;
+
+    @NotNull
+    private
+    boolean isCustomer;
+
+    @NotNull
+    boolean isStaff;
+
+    @NotNull
+    boolean isAdmin;
 }
