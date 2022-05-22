@@ -41,13 +41,13 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String createUserGet() {
+    public String createUserGet(UserForm userForm) {
         log.info("GET /admin/users/create");
 
         return "users/create";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create-user")
     public String createUserPost(@ModelAttribute @Valid UserForm userForm, BindingResult result) {
         log.info("POST /admin/users/create");
 

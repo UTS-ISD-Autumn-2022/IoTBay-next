@@ -1,10 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
+<head th:replace="fragments/layout.html :: layout_head(~{::title})">
+    <title>IoT Bay - Home</title>
+</head>
+
+<body>
+    <header th:insert="fragments/layout.html :: navbar"></header>
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <!-- Header-->
+        <header class="bg-primary py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center">
+                    <h1 class="display-4 fw-bolder text-light">IoT Bay</h1>
+                    <p class="lead fw-normal text-light mb-0">Suppliers of the industry</p>
+                </div>
+            </div>
+        </header>
+
+
+<<body>
+
+    <div class="table-responsive pb-5">
+        <table id="tbOrderHistory" class="table border ps-table w-100 mb-3">
+            <thead>
+                <tr>
+                    <th class="font-weight-bold py-2 border-0 quantity">Order Number</th>
+                    <th class="font-weight-bold py-2 border-0 ">Customer ID</th>
+                    <th class="font-weight-bold py-2 border-0 ">Date</th>
+                    <th class="font-weight-bold py-2 border-0 ">Total</th>
+                    <th class="font-weight-bold py-2 border-0 ">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>>
+    <script src="index.js"></script>
+
+<footer class="footer">
+    <div class="container">
+        &copy; 2022 - IoTBay - <a>Privacy</a>
+    </div>
+</footer>
 </body>
 </html>

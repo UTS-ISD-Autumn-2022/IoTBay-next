@@ -19,9 +19,9 @@
 
                 <div class="register-card-body">
                     <div class="register-col-12">
-                        <label for="newUserUsername" class="form-label">Username</label>
                         <input id="newUserUsername" th:field="*{username}" class="form-control" type="text"
                             placeholder="ExampleUsername" aria-required="true" />
+                        <label for="newUserUsername" class="form-label">Username</label>
                         <span class="text-danger" th:if="${#fields.hasErrors('username')}"
                             th:errors="*{username}"></span>
                     </div>
