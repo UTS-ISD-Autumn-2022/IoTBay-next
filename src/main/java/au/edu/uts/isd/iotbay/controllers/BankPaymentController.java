@@ -10,8 +10,8 @@ import ch.qos.logback.classic.Logger;
 import java.util.UUID;
 
 import javax.validation.Valid;
-import org.slf4j.LoggerFactory;
 
+import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +31,7 @@ public class BankPaymentController {
     @Autowired
     Bankpaymentimp bankpaymentimp;
 
-    final Logger logger = LoggerFactory.getLogger(Bankpaymentimp.class);
+    private final Logger  log = LoggerFactory.getLogger(Bankpaymentimp.class);
 
     @GetMapping("/Bank_Payment")
     String indexGet() {
@@ -62,7 +62,7 @@ public class BankPaymentController {
         }
 
         try {
-            Bankpaymentimp.UpdateBank_Payment (UUID ,bankpaymentform);
+            Bankpaymentimp.UpdateBank_Payment (id ,bankpaymentform);
         } catch (Exception ex) {
             log.error("SQL Exception", ex);
             return "error/500";
