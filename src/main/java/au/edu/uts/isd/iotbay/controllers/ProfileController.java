@@ -7,13 +7,16 @@ import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.View;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -61,8 +64,8 @@ public class ProfileController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editPost(@PathVariable("id") UUID id, @Valid EditCustomerForm form, BindingResult result) {
-        log.info("PUT: /profile/edit/" + id);
+    public String editPost(@PathVariable("id") UUID id, @ModelAttribute @Valid EditCustomerForm editCustomerForm, BindingResult result) {
+        log.info("POST: /profile/edit/" + id);
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach((e) -> log.warn("Field Error: {}", e));
@@ -70,17 +73,26 @@ public class ProfileController {
         }
 
         try {
-            userManager.updateUserInformation(id, form);
+            userManager.updateUserInformation(id, editCustomerForm);
         } catch (Exception ex) {
             log.error("SQL Exception", ex);
             return "error/500";
         }
 
-        return "profile/edit";
+        return "redirect:/profile";
     }
 
-    @PostMapping("/delete/{id}")
-    public String customerDelete(@PathVariable("id") String id) {
+    @PostMapping("/delete/{username}")
+    public String customerDelete(@PathVariable("username") String username, HttpServletRequest req) {
+        try {
+            userManager.deleteUserByUsername(username);
+        } catch (Exception e) {
+            log.error("Could not delete user successfully", e);
+            return "error/500";
+        }
+
+        req.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+
         return "redirect:/logout";
     }
 }
