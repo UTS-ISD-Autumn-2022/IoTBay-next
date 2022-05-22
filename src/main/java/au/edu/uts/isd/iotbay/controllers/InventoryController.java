@@ -1,4 +1,5 @@
 package au.edu.uts.isd.iotbay.controllers;
+
 import au.edu.uts.isd.iotbay.models.dao.InventoryManager;
 import au.edu.uts.isd.iotbay.models.data.Customer;
 import au.edu.uts.isd.iotbay.models.data.Product;
@@ -25,17 +26,15 @@ import java.util.UUID;
 public class InventoryController {
     @Autowired
     InventoryManager inventoryManager;
+
     @PostMapping("/addproduct")
-    public String addproduct(@Valid Product product) {
+    public String addproduct(@Valid Product product, BindingResult result) {
         if (result.hasErrors()) {
             return "add-user";
         }
-        
-        inventoryManager.save(user);
+
+        // inventoryManager.save(user);
         return "redirect:/index";
     }
 
-    }    
-
-    
-
+}
