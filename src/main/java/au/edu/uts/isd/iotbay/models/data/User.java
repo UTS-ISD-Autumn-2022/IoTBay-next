@@ -1,6 +1,7 @@
 package au.edu.uts.isd.iotbay.models.data;
 
 import au.edu.uts.isd.iotbay.models.forms.RegisterForm;
+import au.edu.uts.isd.iotbay.models.forms.UserForm;
 import lombok.*;
 
 import java.util.UUID;
@@ -15,7 +16,7 @@ public class User {
     private String firstName;
     private String lastName;
 
-    public User(RegisterForm registerForm) {
+    public User(final RegisterForm registerForm) {
         id = UUID.randomUUID();
 
         username = registerForm.getUsername();
@@ -23,5 +24,13 @@ public class User {
 
         firstName = registerForm.getFirstName();
         lastName = registerForm.getLastName();
+    }
+
+    public User(final UserForm userForm) {
+        id = UUID.randomUUID();
+        username = userForm.getUsername();
+        email = userForm.getEmail();
+        firstName = userForm.getFirstName();
+        lastName = userForm.getLastName();
     }
 }

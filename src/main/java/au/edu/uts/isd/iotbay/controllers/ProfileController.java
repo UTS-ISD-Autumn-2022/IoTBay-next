@@ -7,13 +7,16 @@ import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.View;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -79,9 +82,17 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
-    @PostMapping("/delete/{id}")
-    public String customerDelete(@PathVariable("id") UUID id) throws Exception {
-        throw new Exception("Unimplemented");
-        // return "redirect:/logout";
+    @PostMapping("/delete/{username}")
+    public String customerDelete(@PathVariable("username") String username, HttpServletRequest req) {
+        try {
+            userManager.deleteUserByUsername(username);
+        } catch (Exception e) {
+            log.error("Could not delete user successfully", e);
+            return "error/500";
+        }
+
+        req.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+
+        return "redirect:/logout";
     }
 }
