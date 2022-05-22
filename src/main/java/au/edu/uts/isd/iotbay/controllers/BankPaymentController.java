@@ -10,8 +10,8 @@ import ch.qos.logback.classic.Logger;
 import java.util.UUID;
 
 import javax.validation.Valid;
+import org.slf4j.LoggerFactory;
 
-import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +31,7 @@ public class BankPaymentController {
     @Autowired
     Bankpaymentimp bankpaymentimp;
 
-    final private Logger log = LoggerFactory.getLogger(this.getClass());
+    final Logger logger = LoggerFactory.getLogger(Bankpaymentimp.class);
 
     @GetMapping("/Bank_Payment")
     String indexGet() {

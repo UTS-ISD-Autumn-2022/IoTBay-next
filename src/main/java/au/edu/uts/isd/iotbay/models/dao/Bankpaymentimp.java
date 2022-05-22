@@ -19,15 +19,14 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@AllArgsConstructor
-@RequiredArgsConstructor
+
 
 
 
 @Component
 
 public  class Bankpaymentimp  {
-    private final JdbcTemplate jdbcTemplate;
+    private final static JdbcTemplate jdbcTemplate;
     final Logger logger = LoggerFactory.getLogger(Bankpaymentimp.class);
     public Bankpaymentimp (JdbcTemplate B_jdbcTemplate) {
         jdbcTemplate = B_jdbcTemplate;
@@ -40,13 +39,13 @@ public  class Bankpaymentimp  {
     }
 
    
-    public Bank_Payment  UpdateBank_Payment (UUID id, Bankpaymentform bankpaymentform){
+    public static Bank_Payment  UpdateBank_Payment (UUID id, Bankpaymentform bankpaymentform){
         String sql = "UPDATE BANK_PAYMENT BANK_NAME=? , BANK_ACCOUNT_NUMBER=? ,BSB_NUMBER=? WHERE id=?";
         return jdbcTemplate.update(sql , bankpaymentform.get_BANK_NAME(), bankpaymentform.get_BANK_ACCOUNT_NUMBER(),bankpaymentform.get_BSB_NUMBER());
     }
 
   
-    public Bank_Payment getBank_Payment(UUID _id){
+    public static Bank_Payment getBank_Payment(UUID _id){
         String sql = "SELECT FROM  BANK_PAYMENT WHERE _id= " +_id;
         ResultSetExtractor<Bank_Payment> extractor = (ResultSet rs) -> {
             if (rs.next()){
