@@ -12,7 +12,7 @@ public interface BankPaymentDao {
     
   public int UpdateBank_Payment (Bankpaymentform bankpaymentform);
 
-    public Bank_Payment getBank_Payment(int _id);
+    public Bank_Payment getBank_Payment(UUID _id);
 
  public int deleteBank_Payment(UUID _id);
 

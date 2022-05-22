@@ -11,7 +11,7 @@ public interface CardPaymentDao {
 
 public int UpdateCard_Payment (Cardpaymentform cardpaymentform);
 
-public Card_payment getCard_Payment(int _id);
+public Card_payment getCard_Payment(UUID _id);
 
 public int deleteCard_Payment(UUID _id);
 
