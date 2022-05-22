@@ -102,7 +102,34 @@ public class UserController {
 
     @PostMapping("/edit/{id}")
     public String editUserPost(@PathVariable("id") UUID id, @ModelAttribute @Valid UserForm userForm, BindingResult result) {
-        return "stub";
+        log.info("GET /admin/users/edit/" + id.toString());
+
+        if (result.hasErrors()) {
+            result.getFieldErrors().forEach((e) -> log.warn("Field Error {}", e));
+            return "users/edit";
+        }
+
+        try {
+            userManager.updateUser(id, userForm);
+        } catch (Exception ex) {
+            log.error("SQL Exception", ex);
+            return "error/500";
+        }
+
+        return "redirect:/admin/users";
     }
 
+    @PostMapping("/delete/{username}")
+    public String customerDelete(@PathVariable("username") String username) {
+        log.info("DELETE /admin/users/delete/" + username);
+
+        try {
+            userManager.deleteUserByUsername(username);
+        } catch (Exception e) {
+            log.error("SQL Exception", e);
+            return "error/500";
+        }
+
+        return "redirect:/admin/users";
+    }
 }

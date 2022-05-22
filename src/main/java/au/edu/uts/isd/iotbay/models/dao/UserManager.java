@@ -250,6 +250,29 @@ public class UserManager {
         return user;
     }
 
+    public User updateUser(final UUID id, final UserForm form) throws DataAccessException {
+        logger.info("Editing user details");
+
+        val user = new User(id);
+        user.setEmail(form.getEmail());
+        user.setFirstName(form.getFirstName());
+        user.setLastName(form.getLastName());
+
+        val updateUserCredQuery = "UPDATE users SET password = ? WHERE username = ?";
+
+        jdbcTemplate.update(updateUserCredQuery, passwordEncoder.encode(form.getPassword()), user.getUsername());
+        val updateUserQuery = "UPDATE user_information " +
+                "SET " +
+                "first_name = ?," +
+                "last_name = ?," +
+                "email = ?" +
+                "WHERE id = ?";
+
+        jdbcTemplate.update(updateUserQuery, user.getFirstName(), user.getLastName(), user.getEmail(), user.getId());
+
+        return user;
+    }
+
     /**
      * Delete a user by their username, cascade deletes a user, so all associated
      * tables are also deleted, can
