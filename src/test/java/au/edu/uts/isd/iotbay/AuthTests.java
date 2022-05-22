@@ -29,119 +29,122 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class AuthTests {
 
-    final Logger log = LoggerFactory.getLogger(AuthTests.class);
+        final Logger log = LoggerFactory.getLogger(AuthTests.class);
 
-    @Autowired
-    private MockMvc mvc;
+        @Autowired
+        private MockMvc mvc;
 
-    @MockBean
-    private UserManager userManager;
+        @MockBean
+        private UserManager userManager;
 
+        /**
+         * <h3>As a registered account holder, I want to authenticate with IoTBay so
+         * that I can be granted permission to
+         * use restricted services</h3>
+         *
+         * <ul>
+         * <li><b>Given:</b> User has registered an account</li>
+         * <li><b>When:</b> User enters valid login details</li>
+         * <li><b>Then:</b> The server redirects user to home screen with login
+         * cookie</li>
+         * </ul>
+         *
+         * @result 302: Successful redirect
+         */
+        @Test
+        @DisplayName("UA-1: Authentication Test")
+        void testAuthentication() throws Exception {
+                log.info("UA-1: Authentication Test");
 
-    /**
-     * <h3>As a registered account holder, I want to authenticate with IoTBay so that I can be granted permission to
-     * use restricted services</h3>
-     *
-     * <ul>
-     *     <li><b>Given:</b> User has registered an account</li>
-     *     <li><b>When:</b> User enters valid login details</li>
-     *     <li><b>Then:</b> The server redirects user to home screen with login cookie</li>
-     * </ul>
-     *
-     * @result 302: Successful redirect
-     */
-    @Test
-    @DisplayName("UA-1: Authentication Test")
-    void testAuthentication() throws Exception {
-        log.info("UA-1: Authentication Test");
+                // test with a not real user
+                mvc.perform(formLogin().user("not-real-user").password("i"))
+                                .andExpect(unauthenticated())
+                                .andExpect(redirectedUrl("/login?error"))
+                                .andExpect(status().isFound());
 
-        // test with a not real user
-        mvc.perform(formLogin().user("not-real-user").password("i"))
-                .andExpect(unauthenticated())
-                .andExpect(redirectedUrl("/login?error"))
-                .andExpect(status().isFound());
+                // Test successful interaction
+                mvc
+                                .perform(formLogin().user("admin").password("StrongPassword"))
+                                .andExpect(authenticated().withRoles("ADMIN"))
+                                .andExpect(redirectedUrl("/"))
+                                .andExpect(status().isFound());
+        }
 
+        /**
+         * <h3>As a registered account holder, I want to access restricted parts of the
+         * app, so I can use those features</h3>
+         *
+         * <ul>
+         * <li><b>Given:</b> The user is logged in</li>
+         * <li><b>When:</b> The user tries to access a hidden portion of the app</li>
+         * <li><b>Then:</b> The server responds with 200 OK</li>
+         * </ul>
+         *
+         * @result http: 200 OK
+         */
+        @Test
+        @DisplayName("UA-2: Authorisation Test")
+        void testAuthorisation() throws Exception {
+                mvc.perform(get("/profile"))
+                                .andExpect(redirectedUrl("http://localhost/login"))
+                                .andExpect(status().isFound());
 
-        // Test successful interaction
-        mvc
-                .perform(formLogin().user("admin").password("StrongPassword"))
-                .andExpect(authenticated().withRoles("ADMIN"))
-                .andExpect(redirectedUrl("/"))
-                .andExpect(status().isFound());
-    }
+                mvc.perform(get("/profile").with(
+                                user("admin")
+                                                .password("StrongPassword")
+                                                .roles("ADMIN")))
+                                .andExpect(status().isForbidden());
 
-    /**
-     * <h3>As a registered account holder, I want to access restricted parts of the app, so I can use those features</h3>
-     *
-     * <ul>
-     *     <li><b>Given:</b> The user is logged in</li>
-     *     <li><b>When:</b> The user tries to access a hidden portion of the app</li>
-     *     <li><b>Then:</b> The server responds with 200 OK</li>
-     * </ul>
-     *
-     * @result http: 200 OK
-     */
-    @Test
-    @DisplayName("UA-2: Authorisation Test")
-    void testAuthorisation() throws Exception {
-        mvc.perform(get("/profile"))
-                .andExpect(redirectedUrl("http://localhost/login"))
-                .andExpect(status().isFound());
+                mvc.perform(get("/admin").with(
+                                user("admin")
+                                                .password("StrongPassword")
+                                                .roles("ADMIN")))
+                                .andExpect(status().isOk());
 
-        mvc.perform(get("/profile").with(
-                        user("admin")
-                                .password("StrongPassword")
-                                .roles("ADMIN")))
-                .andExpect(status().isForbidden());
+        }
 
-        mvc.perform(get("/admin").with(
-                user("admin")
-                        .password("StrongPassword")
-                        .roles("ADMIN")))
-                .andExpect(status().isOk());
+        /**
+         * <h3>As a registered account holder, I want to access restricted parts of the
+         * app, so I can use those features</h3>
+         *
+         * <ul>
+         * <li><b>Given:</b> The user is logged in</li>
+         * <li><b>When:</b> The user tries to access a hidden portion of the app</li>
+         * <li><b>Then:</b> The server responds with 200 OK</li>
+         * </ul>
+         *
+         * @result http: 200 OK
+         */
+        @Test
+        @DisplayName("UA-3: Customer Registration Test")
+        void testRegister() throws Exception {
+                RegisterForm form = new RegisterForm();
+                form.setUsername("testuser");
+                form.setEmail("test@email.email");
+                form.setFirstName("first");
+                form.setLastName("last");
+                form.setPassword("password123");
+                form.setPasswordVerification("password123");
 
-    }
+                User user = new User(form);
 
-    /**
-     * <h3>As a registered account holder, I want to access restricted parts of the app, so I can use those features</h3>
-     *
-     * <ul>
-     *     <li><b>Given:</b> The user is logged in</li>
-     *     <li><b>When:</b> The user tries to access a hidden portion of the app</li>
-     *     <li><b>Then:</b> The server responds with 200 OK</li>
-     * </ul>
-     *
-     * @result http: 200 OK
-     */
-    @Test
-    @DisplayName("UA-3: Customer Registration Test")
-    void testRegister() throws Exception {
-        RegisterForm form = new RegisterForm();
-        form.setUsername("testuser");
-        form.setEmail("test@email.email");
-        form.setFirstName("first");
-        form.setLastName("last");
-        form.setPassword("password123");
-        form.setPasswordVerification("password123");
+                Customer customer = new Customer(user);
 
-        User user = new User(form);
+                when(userManager.registerCustomer(form)).thenReturn(customer);
 
-        Customer customer = new Customer(user);
+                // responds with status ok, but also returns a html page with error messages
+                mvc.perform(post("/register").with(csrf()))
+                                .andExpect(unauthenticated())
+                                .andExpect(status().isOk());
 
-        when(userManager.registerCustomer(form)).thenReturn(customer);
-
-        mvc.perform(post("/register").with(csrf()))
-                .andExpect(unauthenticated())
-                .andExpect(status().isOk());
-
-        mvc.perform(post("/register").with(csrf())
-                .param("username", form.getUsername())
-                .param("email", form.getEmail())
-                .param("firstName", form.getFirstName())
-                .param("lastName", form.getLastName())
-                .param("password", form.getPassword())
-                .param("passwordVerification", form.getPasswordVerification()))
-                .andExpect(redirectedUrl("/login"))
-                .andExpect(status().isFound());
-    }
+                mvc.perform(post("/register").with(csrf())
+                                .param("username", form.getUsername())
+                                .param("email", form.getEmail())
+                                .param("firstName", form.getFirstName())
+                                .param("lastName", form.getLastName())
+                                .param("password", form.getPassword())
+                                .param("passwordVerification", form.getPasswordVerification()))
+                                .andExpect(redirectedUrl("/login"))
+                                .andExpect(status().isFound());
+        }
 }

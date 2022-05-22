@@ -52,10 +52,12 @@
                     <a class="nav-link text-dark" th:href="@{/profile}" sec:authentication="name"></a>
                 </li>
 
-                <a class="btn btn-outline-dark" href="javascript: document.logoutForm.submit()">Logout</a>
-                <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
-                    <input hidden type="submit" value="Logout" />
-                </form>
+                <li>
+                    <a class="btn btn-outline-dark" href="javascript: document.logoutForm.submit()">Logout</a>
+                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                        <input hidden type="submit" value="Logout" />
+                    </form>
+                </li>
             </ul>
             
             <div class="d-flex mx-2">
