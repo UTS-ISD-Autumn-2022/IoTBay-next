@@ -1,5 +1,6 @@
 package au.edu.uts.isd.iotbay.models.forms;
 
+import java.io.Serializable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,10 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class Cardpaymentform {
+public class Cardpaymentform implements Serializable {
+    
+
+    
     @NotNull
     @Size (max = 255)
     private String  _card_name;
@@ -22,7 +26,7 @@ public class Cardpaymentform {
 
     @NotNull
     @Size (max = 3)
-    private int _card_cvv;
+    private int _card_cvc;
    
     @NotNull
     @Max (value = 2) 
@@ -30,26 +34,6 @@ public class Cardpaymentform {
     
     @NotNull
     @Max (value = 2)
-    private int _card_expiry_year ;
+    private int _card_expiry_year ; 
 
-    /*public String get_card_name() {
-        return _card_name;
-    }
-
-    public int get_card_number() {
-        return _card_number;
-    }
-
-    public int get_card_cvc() {
-        return _card_cvv;
-    }
-
-    public int get_card_expiry_month() {
-        return _card_expiry_month;
-    }
-
-    public int get_card__expiry_year() {
-        return _card_expiry_year;
-    } 
-*/
 }

@@ -1,5 +1,7 @@
 package au.edu.uts.isd.iotbay.models.forms;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,13 +10,13 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class Bankpaymentform {
+public class Bankpaymentform implements Serializable {
     
-   
 
+    
     @NotNull
     @Size(max = 255)
-    private String  _BANK_ACCOUNT_NAME;
+    private String  _BANK_NAME;
     
     @NotNull
     @Size(max = 13)
@@ -24,20 +26,9 @@ public class Bankpaymentform {
     @Size(max = 3)
     private int _BSB_NUMBER;
 
-    /*public String get_BANK_NAME() {
-        return _BANK_ACCOUNT_NAME;
-    }
-
-    public int get_BANK_ACCOUNT_NUMBER() {
-        return _BANK_ACCOUNT_NUMBER;
-    }
-
-    public int get_BSB_NUMBER() {
-        return _BSB_NUMBER;
-    }
-
-   */
-    }
    
+   
+
+}
    
 
